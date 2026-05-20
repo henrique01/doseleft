@@ -1,0 +1,193 @@
+name: DoseLeft
+options:
+  bundleIdPrefix: com.doseleft
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+  developmentLanguage: en
+  groupSortPosition: top
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+
+packages:
+  DoseCore:
+    path: DoseCore
+
+targets:
+  DoseLeft:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App
+        excludes:
+          - Resources/*.entitlements
+          - Resources/Info.plist
+    resources:
+      - App/Resources/Assets.xcassets
+      - App/Resources/en.lproj
+      - App/Resources/de.lproj
+      - App/Resources/pt.lproj
+    info:
+      path: App/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: DoseLeft
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UIBackgroundModes:
+          - remote-notification
+        NSUserNotificationsUsageDescription: "DoseLeft uses notifications to remind you before a medication runs out."
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        CFBundleLocalizations:
+          - en
+          - de
+          - pt
+    entitlements:
+      path: App/Resources/DoseLeft.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.doseleft.shared
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.doseleft.app
+        com.apple.developer.icloud-services:
+          - CloudKit
+        aps-environment: development
+        com.apple.developer.usernotifications.time-sensitive: true
+    dependencies:
+      - package: DoseCore
+      - target: DoseWidget
+      - target: DoseWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.doseleft.app
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    preBuildScripts:
+      - name: Generate icons from doseleft.icon
+        script: |
+          cd "$SRCROOT"
+          /usr/bin/env python3 scripts/build-icons.py
+        inputFiles:
+          - $(SRCROOT)/doseleft.icon/icon.json
+          - $(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-2-track (1).svg
+          - $(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-3-arc (2).svg
+          - $(SRCROOT)/scripts/build-icons.py
+        outputFiles:
+          - $(SRCROOT)/App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+        basedOnDependencyAnalysis: true
+
+  DoseWidget:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - Widget
+    info:
+      path: Widget/Info.plist
+      properties:
+        CFBundleDisplayName: DoseLeft
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: Widget/DoseWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.doseleft.shared
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.doseleft.app
+        com.apple.developer.icloud-services:
+          - CloudKit
+    dependencies:
+      - package: DoseCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.doseleft.app.widget
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: YES
+
+  DoseWatch:
+    type: application
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - Watch
+    info:
+      path: Watch/Info.plist
+      properties:
+        CFBundleDisplayName: DoseLeft
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        WKApplication: true
+        WKWatchOnly: false
+        WKCompanionAppBundleIdentifier: com.doseleft.app
+    entitlements:
+      path: Watch/DoseWatch.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.doseleft.shared
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.doseleft.app
+        com.apple.developer.icloud-services:
+          - CloudKit
+    dependencies:
+      - package: DoseCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.doseleft.app.watchkitapp
+        SKIP_INSTALL: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+  DoseCoreTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: DoseCore/Tests/DoseCoreTests
+    dependencies:
+      - package: DoseCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  DoseLeft:
+    build:
+      targets:
+        DoseLeft: all
+        DoseWidget: all
+        DoseWatch: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - DoseCoreTests
+    archive:
+      config: Release
+
+  DoseCoreTests:
+    build:
+      targets:
+        DoseCoreTests: [test]
+    test:
+      config: Debug
+      targets:
+        - DoseCoreTests

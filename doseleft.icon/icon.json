@@ -1,0 +1,60 @@
+{
+  "fill" : {
+    "automatic-gradient" : "display-p3:0.96946,0.96946,0.96946,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.45828,0.30540,1.08858,1.00000",
+              "display-p3:0.30955,0.15030,0.96611,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.5,
+                "y" : 0
+              },
+              "stop" : {
+                "x" : 1.3994820682451254,
+                "y" : -0.07704704576502733
+              }
+            }
+          },
+          "image-name" : "DoseLeft-icon-E-arc.svg",
+          "name" : "DoseLeft-icon-E-arc",
+          "opacity" : 0.7
+        },
+        {
+          "fill-specializations" : [
+            {
+              "value" : "automatic"
+            },
+            {
+              "appearance" : "dark",
+              "value" : "automatic"
+            }
+          ],
+          "glass" : false,
+          "image-name" : "DoseLeft-icon-E-track.svg",
+          "name" : "DoseLeft-icon-E-track"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

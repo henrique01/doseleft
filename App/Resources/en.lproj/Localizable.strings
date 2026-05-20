@@ -1,0 +1,80 @@
+/* DoseLeft — English strings */
+
+"medications.title" = "Medications";
+"medications.empty.title" = "No medications yet";
+"medications.empty.body" = "Add your first medication to start tracking what's left.";
+"medications.empty.cta" = "Add medication";
+
+"onboarding.welcome.title" = "Know what's left, before it runs out.";
+"onboarding.welcome.body" = "A quiet tracker for inhalers, drops, and daily tablets.";
+"onboarding.welcome.cta" = "Get started";
+
+"onboarding.privacy.title" = "Your data stays here.";
+"onboarding.privacy.body" = "Everything you log lives on this device. No accounts. No tracking. No cloud.";
+"onboarding.privacy.cta" = "Continue";
+
+"onboarding.notifications.title" = "A nudge, a week ahead.";
+"onboarding.notifications.body" = "We'll let you know when it's time to refill — no surprises.";
+"onboarding.notifications.allow" = "Allow notifications";
+"onboarding.notifications.later" = "Maybe later";
+
+"detail.daysLeft" = "days left";
+"detail.runningLow" = "Running low — refill soon";
+"detail.logDose" = "Log dose";
+"detail.missedToday" = "I missed today";
+"detail.section.schedule" = "Schedule";
+"detail.section.recent" = "Recent activity";
+"detail.section.container" = "Container";
+"detail.started" = "Started";
+"detail.totalDoses" = "Total doses";
+"detail.startNewContainer" = "Start new container";
+"detail.viewAll" = "View all";
+
+"add.title" = "New medication";
+"edit.title" = "Edit";
+"add.section.icon" = "Icon & color";
+"add.section.name" = "Name";
+"add.section.total" = "Total doses in container";
+"add.section.tracking" = "Tracking";
+"add.section.schedule" = "Schedule";
+"add.section.remind" = "Remind me";
+"add.cancel" = "Cancel";
+"add.save" = "Save";
+"add.addTime" = "+ Add another time";
+"add.leadDays" = "Days before empty";
+
+"schedule.title" = "Schedule";
+"schedule.done" = "Done";
+"schedule.time" = "Time";
+"schedule.doses" = "Doses";
+"schedule.days" = "Days";
+"schedule.everyDay" = "Every day";
+
+"history.subtitle" = "All logged doses for this medication.";
+"history.today" = "Today";
+"history.yesterday" = "Yesterday";
+"history.thisWeek" = "This week";
+"history.earlier" = "Earlier";
+
+"settings.title" = "Settings";
+"settings.section.notifications" = "Notifications";
+"settings.section.appearance" = "Appearance";
+"settings.section.privacy" = "Privacy";
+"settings.section.about" = "About";
+"settings.timeSensitive" = "Time-sensitive";
+"settings.timeSensitive.subtitle" = "Break through Focus and silent modes.";
+"settings.sound" = "Sound";
+"settings.sound.subtitle" = "Play a sound when a reminder fires.";
+"settings.theme" = "Theme";
+
+"notification.runningLow.title" = "Running low";
+"notification.runningLow.subtitle" = "Notify me before the container is empty.";
+"notification.refillNow.title" = "Refill now";
+"notification.refillNow.subtitle" = "Final reminder ~1 day before empty.";
+"notification.doseTime.title" = "At each dose time";
+"notification.doseTime.subtitle" = "Notify me to take this medication.";
+"notification.lowStock.title" = "Low stock";
+"notification.lowStock.subtitle" = "Notify me when supply gets low.";
+"settings.privacy.body" = "All medication data is stored only on this device and your private iCloud. DoseLeft has no servers, no accounts, and no analytics.";
+"settings.version" = "Version";
+"settings.acknowledgments" = "Acknowledgments";

@@ -1,0 +1,80 @@
+/* DoseLeft — Português */
+
+"medications.title" = "Medicamentos";
+"medications.empty.title" = "Nenhum medicamento ainda";
+"medications.empty.body" = "Adicione o primeiro medicamento para começar a acompanhar.";
+"medications.empty.cta" = "Adicionar medicamento";
+
+"onboarding.welcome.title" = "Saiba quanto resta antes de acabar.";
+"onboarding.welcome.body" = "Um acompanhante discreto para inaladores, gotas e comprimidos diários.";
+"onboarding.welcome.cta" = "Começar";
+
+"onboarding.privacy.title" = "Seus dados ficam aqui.";
+"onboarding.privacy.body" = "Tudo o que você registra permanece neste dispositivo. Sem contas. Sem rastreio. Sem nuvem.";
+"onboarding.privacy.cta" = "Continuar";
+
+"onboarding.notifications.title" = "Um aviso, uma semana antes.";
+"onboarding.notifications.body" = "Avisaremos quando for hora de repor — sem surpresas.";
+"onboarding.notifications.allow" = "Permitir notificações";
+"onboarding.notifications.later" = "Talvez depois";
+
+"detail.daysLeft" = "dias restantes";
+"detail.runningLow" = "Acabando — repor em breve";
+"detail.logDose" = "Registrar dose";
+"detail.missedToday" = "Esqueci hoje";
+"detail.section.schedule" = "Horários";
+"detail.section.recent" = "Atividade recente";
+"detail.section.container" = "Recipiente";
+"detail.started" = "Iniciado";
+"detail.totalDoses" = "Doses totais";
+"detail.startNewContainer" = "Iniciar novo recipiente";
+"detail.viewAll" = "Ver tudo";
+
+"add.title" = "Novo medicamento";
+"edit.title" = "Editar";
+"add.section.icon" = "Ícone e cor";
+"add.section.name" = "Nome";
+"add.section.total" = "Doses no recipiente";
+"add.section.tracking" = "Acompanhamento";
+"add.section.schedule" = "Horários";
+"add.section.remind" = "Lembrar-me";
+"add.cancel" = "Cancelar";
+"add.save" = "Salvar";
+"add.addTime" = "+ Adicionar outro horário";
+"add.leadDays" = "Dias antes de acabar";
+
+"schedule.title" = "Horários";
+"schedule.done" = "Concluir";
+"schedule.time" = "Horário";
+"schedule.doses" = "Doses";
+"schedule.days" = "Dias";
+"schedule.everyDay" = "Todos os dias";
+
+"history.subtitle" = "Todas as doses registradas para este medicamento.";
+"history.today" = "Hoje";
+"history.yesterday" = "Ontem";
+"history.thisWeek" = "Esta semana";
+"history.earlier" = "Anterior";
+
+"settings.title" = "Ajustes";
+"settings.section.notifications" = "Notificações";
+"settings.section.appearance" = "Aparência";
+"settings.section.privacy" = "Privacidade";
+"settings.section.about" = "Sobre";
+"settings.timeSensitive" = "Sensível ao tempo";
+"settings.timeSensitive.subtitle" = "Atravessa o Foco e o modo silencioso.";
+"settings.sound" = "Som";
+"settings.sound.subtitle" = "Tocar um som quando um lembrete aparecer.";
+"settings.theme" = "Tema";
+
+"notification.runningLow.title" = "Acabando";
+"notification.runningLow.subtitle" = "Avisar antes do recipiente acabar.";
+"notification.refillNow.title" = "Repor agora";
+"notification.refillNow.subtitle" = "Lembrete final ~1 dia antes de acabar.";
+"notification.doseTime.title" = "Em cada horário de dose";
+"notification.doseTime.subtitle" = "Avisar para tomar este medicamento.";
+"notification.lowStock.title" = "Estoque baixo";
+"notification.lowStock.subtitle" = "Avisar quando o estoque ficar baixo.";
+"settings.privacy.body" = "Todos os dados do medicamento ficam apenas neste dispositivo e no seu iCloud privado. DoseLeft não tem servidores, contas ou analytics.";
+"settings.version" = "Versão";
+"settings.acknowledgments" = "Agradecimentos";

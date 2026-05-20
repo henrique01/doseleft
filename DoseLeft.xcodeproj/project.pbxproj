@@ -1,0 +1,1066 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0205B0BFE90CCFB9688DFD34 /* DoseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A06D29AE8583F19E4E5B9F7B /* DoseCore */; };
+		045A38436DD95784375383D5 /* DoseWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B62BDE4F267432CDF717486 /* DoseWatchApp.swift */; };
+		062C24EECC71ED2881DEC6F6 /* DoseWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0F0B17BCEC40BDA491C1E710 /* DoseWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		07D371A5F36379E14B66F1F3 /* SegmentedTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D25E488453888CF77D35B9 /* SegmentedTwo.swift */; };
+		15B505FB68372271023C04DC /* DoseWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A753A45C10035C601CBD5D1 /* DoseWidget.swift */; };
+		1797EB1AE87ED661B4FE57EC /* DoseMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7C50AA83F50E28D493220 /* DoseMathTests.swift */; };
+		1C8211D6056314FDFB12BA3E /* WatchLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBE64D660A2C11BDED093B /* WatchLogView.swift */; };
+		2631D334FAA912472685CE68 /* ActivityRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F9BE32ED7DD86F49A8275D /* ActivityRow.swift */; };
+		2E60AC374EE467E4E162B127 /* DoseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 22C18011DB8226CD2DF0E31A /* DoseCore */; };
+		2F37AA77BA7A654F4F29EA63 /* DoseTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7C5252D134B3D1E32AD815 /* DoseTimelineProvider.swift */; };
+		30369F2E30554DB824D135B5 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F06103BD64D103777787F81 /* SplashView.swift */; };
+		31355A490AEC341E39ABC2A6 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B19AD321B8FC2F7C6C1FECB /* PrimaryButton.swift */; };
+		336AFA52BDF3222176077E99 /* DoseLogActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AA028176DE5695B1C0ECA9 /* DoseLogActions.swift */; };
+		35CEFAE1A83609CEA7138D99 /* LogDoseIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEFF5778EEEEF13ED961D31 /* LogDoseIntent.swift */; };
+		3692D99E2B6C85352D89D612 /* DoseCore in Frameworks */ = {isa = PBXBuildFile; productRef = C88A696F7D0A70434733FA09 /* DoseCore */; };
+		36C1930F69991AD7A7A92D45 /* SmallDoseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AB1CD3882E313EB130835B /* SmallDoseView.swift */; };
+		371B5FEAB02CEABF7AB5733D /* ResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7108715F6BD917FEB7941247 /* ResetTests.swift */; };
+		394BA02D938CDDC85A821D24 /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB50767B41F578B5ED05C9 /* PerformanceTests.swift */; };
+		3BDC37F05CE386D0F419A56F /* GetRemainingIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A455AC718B18884AD9D873 /* GetRemainingIntent.swift */; };
+		3D441804EA99C9DD9BC19161 /* DoseLeftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C385AB848AC0DEA7587186E /* DoseLeftApp.swift */; };
+		404782C584FA6766E54C7C1F /* DoseLeftShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BF32EBD10A923AB1E53AC /* DoseLeftShortcuts.swift */; };
+		44731D26C7026FDB602C4C28 /* MedicationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582FF54E51E2B762CA161407 /* MedicationEntity.swift */; };
+		488A4883B9D535488B2144B1 /* ThemePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4178361684A5AB253276DF /* ThemePreference.swift */; };
+		495E6AE69D6343650435466F /* NotificationsFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3EE98EC358C64B5D950AFC /* NotificationsFrame.swift */; };
+		4C6A88B52673652E865BA763 /* StartDateEditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1452D7B69267EB731A7CA7D7 /* StartDateEditTests.swift */; };
+		4DEBC2FF7400E43CBD7990AD /* MedBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB75D1BB3E6CB36B15E70AC /* MedBadge.swift */; };
+		52D66F45EDA3795CA40740FA /* DoseWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5879A3D9D0CD7A3C48464B /* DoseWidgetBundle.swift */; };
+		5453E5BD91F7F9BEEA341A5F /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10954F5F9EED08D62EADCA7C /* HomeEmptyView.swift */; };
+		6079DC816E33B06B58D4EB5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1117066C0DBD8A1B91C1643A /* Assets.xcassets */; };
+		62AB84824471F8D108FBBA05 /* PrivacyFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06CB597CCF065BD3C56CFDB /* PrivacyFrame.swift */; };
+		659F3D9D4B90BC1F3AC4CA88 /* MediumDoseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DE909B70E12CF867C4FC1D /* MediumDoseView.swift */; };
+		677A6AF249C1ED270216B943 /* DoseComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32271BCB2A50891C2DEEF65C /* DoseComplication.swift */; };
+		6FB9303ED162F6BBA492C53E /* PauseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFA700D211D1D2833FF4C2E /* PauseTests.swift */; };
+		70273BADF41C87B1C3F9104B /* LogMissedIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12885961191DE6E204E30D6C /* LogMissedIntent.swift */; };
+		71D631A8A56A8289EA7B8B2B /* DoseWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 8193DA74B01995B0DED4949C /* DoseWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		76FE200565C63E81D59B183F /* MedicationEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B01CE439C0CE0AAD6B64E83 /* MedicationEditView.swift */; };
+		7939C6F18B4EC1260BE98F81 /* MedicationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C540423BEDE82316CB832A9 /* MedicationDetailView.swift */; };
+		7A218A7ADB310E6ADEE056F4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039283FF090EBA0C2691F700 /* SettingsView.swift */; };
+		7B39778D22E1175278FA47A4 /* ScheduleEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970ED73F683508E14F9186F3 /* ScheduleEditView.swift */; };
+		8104B02C206B9D21F8355347 /* WelcomeFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6870A7B1CB6CA1C736BA16CB /* WelcomeFrame.swift */; };
+		869CB5755B082E1C48FB442B /* MedicationLogPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */; };
+		86D8E07E7118206BD258FB55 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2E31871291BB9BBD157041 /* HomeView.swift */; };
+		86EDD5B1412178D03B7A7305 /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AB61A5E42ABDB72ADA0D81 /* OnboardingFlow.swift */; };
+		9001B4C5331274F5C57C684D /* WatchHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F84D55E604C65A4F281237 /* WatchHomeView.swift */; };
+		92B53037DBB4E826A090BC1B /* PillStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2EBD5865D72DD47F56743 /* PillStepper.swift */; };
+		9AFB43DE0BDDF43B61C8ABAD /* WeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFCCDD9F53DBAAAEC38138A /* WeekdayPicker.swift */; };
+		9EE108A5B46D59CA4D20659E /* WidgetLogDoseIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75478BCD627F679FF7B250CA /* WidgetLogDoseIntent.swift */; };
+		A46454F11DD24F8BBC3E07F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EC6BF820EA339185D4695BC6 /* Localizable.strings */; };
+		A5EFE643384E6ADAFDDF028B /* DoseChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A491A4D193B7FB6826839 /* DoseChip.swift */; };
+		B0E8000ACB0D9FD62CCB76A4 /* LockRectangularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414DCA0D7A245181F9E617F8 /* LockRectangularView.swift */; };
+		B4230C99E62D21A1D7C09D51 /* DoseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1D99563367403CA2EE5EEA5C /* DoseCore */; };
+		C5C6C2AD5EEE65A0F8EF1BC9 /* MedRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC2BFE63E1C8CADDB0CE6366 /* MedRow.swift */; };
+		C627A3B4DB178CAF74D1AFC9 /* DSTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE74D23C2294EA98B4BD3201 /* DSTTests.swift */; };
+		C646647A22222B26DBEC9FD8 /* EditLogDateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A91144B1300B4C6DC74AB48 /* EditLogDateSheet.swift */; };
+		D22ED602FE856AAD7764EEDC /* LockCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AEB1381BD707866C03F9F9 /* LockCircularView.swift */; };
+		DB5C3C6AFB393DD5C2B60B1B /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7DBEFE90E19EA3AB52A9C /* HistoryView.swift */; };
+		DDC4053C645F5CC900614DFA /* HapticTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014D910294513FE42F32D7E4 /* HapticTap.swift */; };
+		EE19065209CA6C79B77F1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9590ED3246BAE507A1DC40F /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		657CCB25AC7200EBB2B0B7D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25DCC59DC42128CC955BA853 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4792FFC9697CEDB117EDD084;
+			remoteInfo = DoseWatch;
+		};
+		D8EB30ED0FDC519927AE4010 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25DCC59DC42128CC955BA853 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BBEFE775005B36952E760B3;
+			remoteInfo = DoseWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6E9BC412106328F806882213 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				062C24EECC71ED2881DEC6F6 /* DoseWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0DACB05E3D6B96B7412DBA3 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				71D631A8A56A8289EA7B8B2B /* DoseWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		014D910294513FE42F32D7E4 /* HapticTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTap.swift; sourceTree = "<group>"; };
+		039283FF090EBA0C2691F700 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		08D8F388CD0962ED0F81650D /* DoseLeft.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DoseLeft.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		09B7DBEFE90E19EA3AB52A9C /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		0C540423BEDE82316CB832A9 /* MedicationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationDetailView.swift; sourceTree = "<group>"; };
+		0F0B17BCEC40BDA491C1E710 /* DoseWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DoseWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		10954F5F9EED08D62EADCA7C /* HomeEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
+		1117066C0DBD8A1B91C1643A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		12885961191DE6E204E30D6C /* LogMissedIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMissedIntent.swift; sourceTree = "<group>"; };
+		13D25E488453888CF77D35B9 /* SegmentedTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedTwo.swift; sourceTree = "<group>"; };
+		1452D7B69267EB731A7CA7D7 /* StartDateEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDateEditTests.swift; sourceTree = "<group>"; };
+		1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationLogPresentation.swift; sourceTree = "<group>"; };
+		1F06103BD64D103777787F81 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		2A2E31871291BB9BBD157041 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		32271BCB2A50891C2DEEF65C /* DoseComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseComplication.swift; sourceTree = "<group>"; };
+		414DCA0D7A245181F9E617F8 /* LockRectangularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockRectangularView.swift; sourceTree = "<group>"; };
+		41AEB1381BD707866C03F9F9 /* LockCircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockCircularView.swift; sourceTree = "<group>"; };
+		4A753A45C10035C601CBD5D1 /* DoseWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseWidget.swift; sourceTree = "<group>"; };
+		54B2EBD5865D72DD47F56743 /* PillStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillStepper.swift; sourceTree = "<group>"; };
+		582FF54E51E2B762CA161407 /* MedicationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationEntity.swift; sourceTree = "<group>"; };
+		5A91144B1300B4C6DC74AB48 /* EditLogDateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogDateSheet.swift; sourceTree = "<group>"; };
+		5BC58859062213BE9026AAB7 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5CEFF5778EEEEF13ED961D31 /* LogDoseIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDoseIntent.swift; sourceTree = "<group>"; };
+		5D3EE98EC358C64B5D950AFC /* NotificationsFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsFrame.swift; sourceTree = "<group>"; };
+		5E7EF887041F114B7FC8C88F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		61A455AC718B18884AD9D873 /* GetRemainingIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRemainingIntent.swift; sourceTree = "<group>"; };
+		6870A7B1CB6CA1C736BA16CB /* WelcomeFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeFrame.swift; sourceTree = "<group>"; };
+		6AB75D1BB3E6CB36B15E70AC /* MedBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedBadge.swift; sourceTree = "<group>"; };
+		6F4178361684A5AB253276DF /* ThemePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreference.swift; sourceTree = "<group>"; };
+		7108715F6BD917FEB7941247 /* ResetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTests.swift; sourceTree = "<group>"; };
+		75478BCD627F679FF7B250CA /* WidgetLogDoseIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLogDoseIntent.swift; sourceTree = "<group>"; };
+		7A726364A66895E8838C337D /* DoseCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DoseCore; path = DoseCore; sourceTree = SOURCE_ROOT; };
+		8193DA74B01995B0DED4949C /* DoseWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoseWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81A0074CEC9EA8FA78BB9CC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8616A686C41BDA91D2379B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8B01CE439C0CE0AAD6B64E83 /* MedicationEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationEditView.swift; sourceTree = "<group>"; };
+		90DE909B70E12CF867C4FC1D /* MediumDoseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumDoseView.swift; sourceTree = "<group>"; };
+		951FBB426126DA5C4014FCBF /* DoseCoreTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DoseCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		956A491A4D193B7FB6826839 /* DoseChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseChip.swift; sourceTree = "<group>"; };
+		970ED73F683508E14F9186F3 /* ScheduleEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEditView.swift; sourceTree = "<group>"; };
+		987BF32EBD10A923AB1E53AC /* DoseLeftShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseLeftShortcuts.swift; sourceTree = "<group>"; };
+		98F9BE32ED7DD86F49A8275D /* ActivityRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRow.swift; sourceTree = "<group>"; };
+		99AA028176DE5695B1C0ECA9 /* DoseLogActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseLogActions.swift; sourceTree = "<group>"; };
+		9B19AD321B8FC2F7C6C1FECB /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		9B62BDE4F267432CDF717486 /* DoseWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseWatchApp.swift; sourceTree = "<group>"; };
+		9C385AB848AC0DEA7587186E /* DoseLeftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseLeftApp.swift; sourceTree = "<group>"; };
+		9F7C5252D134B3D1E32AD815 /* DoseTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseTimelineProvider.swift; sourceTree = "<group>"; };
+		A7EBE64D660A2C11BDED093B /* WatchLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLogView.swift; sourceTree = "<group>"; };
+		BA5879A3D9D0CD7A3C48464B /* DoseWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseWidgetBundle.swift; sourceTree = "<group>"; };
+		C6AB61A5E42ABDB72ADA0D81 /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlow.swift; sourceTree = "<group>"; };
+		C8AB1CD3882E313EB130835B /* SmallDoseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallDoseView.swift; sourceTree = "<group>"; };
+		CAAB50767B41F578B5ED05C9 /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
+		CE74D23C2294EA98B4BD3201 /* DSTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSTTests.swift; sourceTree = "<group>"; };
+		D0F2FE4411839771282D24D5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D9590ED3246BAE507A1DC40F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DAFCCDD9F53DBAAAEC38138A /* WeekdayPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayPicker.swift; sourceTree = "<group>"; };
+		DCFA700D211D1D2833FF4C2E /* PauseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseTests.swift; sourceTree = "<group>"; };
+		DDA7C50AA83F50E28D493220 /* DoseMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseMathTests.swift; sourceTree = "<group>"; };
+		E06CB597CCF065BD3C56CFDB /* PrivacyFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyFrame.swift; sourceTree = "<group>"; };
+		F4F84D55E604C65A4F281237 /* WatchHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHomeView.swift; sourceTree = "<group>"; };
+		F92EE370FBFD18DE54FC5737 /* DoseWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoseWatch.entitlements; sourceTree = "<group>"; };
+		FC2BFE63E1C8CADDB0CE6366 /* MedRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedRow.swift; sourceTree = "<group>"; };
+		FC9534F17E4E564870FD7DEC /* DoseWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoseWidget.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04E68415FF157FDCDB84714E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E60AC374EE467E4E162B127 /* DoseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F88358D2DBDAE6E3D721C27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4230C99E62D21A1D7C09D51 /* DoseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AC5F629F8ACAF8BDFE869FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3692D99E2B6C85352D89D612 /* DoseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF82B82CC421AA43FD6A5630 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0205B0BFE90CCFB9688DFD34 /* DoseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		011F496DD5BBF10A4FBB80B5 = {
+			isa = PBXGroup;
+			children = (
+				5F75BD7DE3194F748D468AF8 /* App */,
+				5D9DB4D3515CF4A0BBAFBFCB /* DoseCore */,
+				3557C272CBCEE07903842638 /* Packages */,
+				9B713D7619CA748E954FAAFA /* Watch */,
+				6F46C5C9A0FA700BDEB51F77 /* Widget */,
+				812CF97149B115E16FEF163C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1C2224726901240D925E9650 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5D3EE98EC358C64B5D950AFC /* NotificationsFrame.swift */,
+				C6AB61A5E42ABDB72ADA0D81 /* OnboardingFlow.swift */,
+				E06CB597CCF065BD3C56CFDB /* PrivacyFrame.swift */,
+				6870A7B1CB6CA1C736BA16CB /* WelcomeFrame.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		26308C572D6F76DAFAE6247A /* Complications */ = {
+			isa = PBXGroup;
+			children = (
+				32271BCB2A50891C2DEEF65C /* DoseComplication.swift */,
+			);
+			path = Complications;
+			sourceTree = "<group>";
+		};
+		34A824B89B6B224BC446544A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				99AA028176DE5695B1C0ECA9 /* DoseLogActions.swift */,
+				1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		3557C272CBCEE07903842638 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				7A726364A66895E8838C337D /* DoseCore */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		382DC22341D5C43F186B4BA5 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				014D910294513FE42F32D7E4 /* HapticTap.swift */,
+				6F4178361684A5AB253276DF /* ThemePreference.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		48DB6F438652D2D78CC8C374 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				41AEB1381BD707866C03F9F9 /* LockCircularView.swift */,
+				414DCA0D7A245181F9E617F8 /* LockRectangularView.swift */,
+				90DE909B70E12CF867C4FC1D /* MediumDoseView.swift */,
+				C8AB1CD3882E313EB130835B /* SmallDoseView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4CCE2B59CA96F8B03A3D3D42 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				75478BCD627F679FF7B250CA /* WidgetLogDoseIntent.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		507ED8FC88DC8DEAD12B2A94 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F61B9B88B86DC398E2B6CACA /* DoseCoreTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		5A9C5637172F932C88B8628B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EC6BF820EA339185D4695BC6 /* Localizable.strings */,
+				D9590ED3246BAE507A1DC40F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5D9DB4D3515CF4A0BBAFBFCB /* DoseCore */ = {
+			isa = PBXGroup;
+			children = (
+				507ED8FC88DC8DEAD12B2A94 /* Tests */,
+			);
+			path = DoseCore;
+			sourceTree = "<group>";
+		};
+		5F75BD7DE3194F748D468AF8 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6783422F10369B362829750D /* Components */,
+				34A824B89B6B224BC446544A /* Helpers */,
+				7FD4678D9A7CE4ED7D5C6A8B /* Intents */,
+				5A9C5637172F932C88B8628B /* Resources */,
+				DBD37EB15C955911CE075EE8 /* Screens */,
+				382DC22341D5C43F186B4BA5 /* Util */,
+				9C385AB848AC0DEA7587186E /* DoseLeftApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6783422F10369B362829750D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				98F9BE32ED7DD86F49A8275D /* ActivityRow.swift */,
+				956A491A4D193B7FB6826839 /* DoseChip.swift */,
+				5A91144B1300B4C6DC74AB48 /* EditLogDateSheet.swift */,
+				6AB75D1BB3E6CB36B15E70AC /* MedBadge.swift */,
+				FC2BFE63E1C8CADDB0CE6366 /* MedRow.swift */,
+				54B2EBD5865D72DD47F56743 /* PillStepper.swift */,
+				9B19AD321B8FC2F7C6C1FECB /* PrimaryButton.swift */,
+				13D25E488453888CF77D35B9 /* SegmentedTwo.swift */,
+				DAFCCDD9F53DBAAAEC38138A /* WeekdayPicker.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6F46C5C9A0FA700BDEB51F77 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				4CCE2B59CA96F8B03A3D3D42 /* Intents */,
+				48DB6F438652D2D78CC8C374 /* Views */,
+				9F7C5252D134B3D1E32AD815 /* DoseTimelineProvider.swift */,
+				FC9534F17E4E564870FD7DEC /* DoseWidget.entitlements */,
+				4A753A45C10035C601CBD5D1 /* DoseWidget.swift */,
+				BA5879A3D9D0CD7A3C48464B /* DoseWidgetBundle.swift */,
+				8616A686C41BDA91D2379B04 /* Info.plist */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		7FD4678D9A7CE4ED7D5C6A8B /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				987BF32EBD10A923AB1E53AC /* DoseLeftShortcuts.swift */,
+				61A455AC718B18884AD9D873 /* GetRemainingIntent.swift */,
+				5CEFF5778EEEEF13ED961D31 /* LogDoseIntent.swift */,
+				12885961191DE6E204E30D6C /* LogMissedIntent.swift */,
+				582FF54E51E2B762CA161407 /* MedicationEntity.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		812CF97149B115E16FEF163C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				951FBB426126DA5C4014FCBF /* DoseCoreTests.xctest */,
+				08D8F388CD0962ED0F81650D /* DoseLeft.app */,
+				8193DA74B01995B0DED4949C /* DoseWatch.app */,
+				0F0B17BCEC40BDA491C1E710 /* DoseWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B713D7619CA748E954FAAFA /* Watch */ = {
+			isa = PBXGroup;
+			children = (
+				26308C572D6F76DAFAE6247A /* Complications */,
+				1117066C0DBD8A1B91C1643A /* Assets.xcassets */,
+				F92EE370FBFD18DE54FC5737 /* DoseWatch.entitlements */,
+				9B62BDE4F267432CDF717486 /* DoseWatchApp.swift */,
+				81A0074CEC9EA8FA78BB9CC3 /* Info.plist */,
+				F4F84D55E604C65A4F281237 /* WatchHomeView.swift */,
+				A7EBE64D660A2C11BDED093B /* WatchLogView.swift */,
+			);
+			path = Watch;
+			sourceTree = "<group>";
+		};
+		DBD37EB15C955911CE075EE8 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				1C2224726901240D925E9650 /* Onboarding */,
+				09B7DBEFE90E19EA3AB52A9C /* HistoryView.swift */,
+				10954F5F9EED08D62EADCA7C /* HomeEmptyView.swift */,
+				2A2E31871291BB9BBD157041 /* HomeView.swift */,
+				0C540423BEDE82316CB832A9 /* MedicationDetailView.swift */,
+				8B01CE439C0CE0AAD6B64E83 /* MedicationEditView.swift */,
+				970ED73F683508E14F9186F3 /* ScheduleEditView.swift */,
+				039283FF090EBA0C2691F700 /* SettingsView.swift */,
+				1F06103BD64D103777787F81 /* SplashView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F61B9B88B86DC398E2B6CACA /* DoseCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				DDA7C50AA83F50E28D493220 /* DoseMathTests.swift */,
+				CE74D23C2294EA98B4BD3201 /* DSTTests.swift */,
+				DCFA700D211D1D2833FF4C2E /* PauseTests.swift */,
+				CAAB50767B41F578B5ED05C9 /* PerformanceTests.swift */,
+				7108715F6BD917FEB7941247 /* ResetTests.swift */,
+				1452D7B69267EB731A7CA7D7 /* StartDateEditTests.swift */,
+			);
+			path = DoseCoreTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4792FFC9697CEDB117EDD084 /* DoseWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7096D89730A4A9912365645 /* Build configuration list for PBXNativeTarget "DoseWatch" */;
+			buildPhases = (
+				11146C3A4F6F8A7602575D86 /* Sources */,
+				CC87F14C4990BCE988953C34 /* Resources */,
+				5F88358D2DBDAE6E3D721C27 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DoseWatch;
+			packageProductDependencies = (
+				1D99563367403CA2EE5EEA5C /* DoseCore */,
+			);
+			productName = DoseWatch;
+			productReference = 8193DA74B01995B0DED4949C /* DoseWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5BBEFE775005B36952E760B3 /* DoseWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F74030A115E2C40B7C01C88 /* Build configuration list for PBXNativeTarget "DoseWidget" */;
+			buildPhases = (
+				02A8325E73270A1808F12E4D /* Sources */,
+				FF82B82CC421AA43FD6A5630 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DoseWidget;
+			packageProductDependencies = (
+				A06D29AE8583F19E4E5B9F7B /* DoseCore */,
+			);
+			productName = DoseWidget;
+			productReference = 0F0B17BCEC40BDA491C1E710 /* DoseWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BF6262210D8C9E0BB30EA00D /* DoseCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF991CC18E5367923EC987E2 /* Build configuration list for PBXNativeTarget "DoseCoreTests" */;
+			buildPhases = (
+				FF6D446BD00FE911047DA98F /* Sources */,
+				9AC5F629F8ACAF8BDFE869FA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DoseCoreTests;
+			packageProductDependencies = (
+				C88A696F7D0A70434733FA09 /* DoseCore */,
+			);
+			productName = DoseCoreTests;
+			productReference = 951FBB426126DA5C4014FCBF /* DoseCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CF3E6441B8E71A36D95743DB /* DoseLeft */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B560BCB709986346789D09E8 /* Build configuration list for PBXNativeTarget "DoseLeft" */;
+			buildPhases = (
+				F5877A9DE0BA9F46E824E3CE /* Generate icons from doseleft.icon */,
+				52D389DDE8FC89CC93125A46 /* Sources */,
+				5767A64C86942ABD1913FC55 /* Resources */,
+				04E68415FF157FDCDB84714E /* Frameworks */,
+				6E9BC412106328F806882213 /* Embed Foundation Extensions */,
+				D0DACB05E3D6B96B7412DBA3 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2F02E14233D575020F12DDA1 /* PBXTargetDependency */,
+				6710A45F3C30DD169D4BB44F /* PBXTargetDependency */,
+			);
+			name = DoseLeft;
+			packageProductDependencies = (
+				22C18011DB8226CD2DF0E31A /* DoseCore */,
+			);
+			productName = DoseLeft;
+			productReference = 08D8F388CD0962ED0F81650D /* DoseLeft.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		25DCC59DC42128CC955BA853 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					4792FFC9697CEDB117EDD084 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					5BBEFE775005B36952E760B3 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					BF6262210D8C9E0BB30EA00D = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					CF3E6441B8E71A36D95743DB = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 3932BDC426CC95174DA91592 /* Build configuration list for PBXProject "DoseLeft" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				de,
+				en,
+				pt,
+			);
+			mainGroup = 011F496DD5BBF10A4FBB80B5;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				57ED7D5CA0E160E6A0E8DE73 /* XCLocalSwiftPackageReference "DoseCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 812CF97149B115E16FEF163C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF6262210D8C9E0BB30EA00D /* DoseCoreTests */,
+				CF3E6441B8E71A36D95743DB /* DoseLeft */,
+				4792FFC9697CEDB117EDD084 /* DoseWatch */,
+				5BBEFE775005B36952E760B3 /* DoseWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5767A64C86942ABD1913FC55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE19065209CA6C79B77F1921 /* Assets.xcassets in Resources */,
+				A46454F11DD24F8BBC3E07F4 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC87F14C4990BCE988953C34 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6079DC816E33B06B58D4EB5A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F5877A9DE0BA9F46E824E3CE /* Generate icons from doseleft.icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/doseleft.icon/icon.json",
+				"$(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-2-track (1).svg",
+				"$(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-3-arc (2).svg",
+				"$(SRCROOT)/scripts/build-icons.py",
+			);
+			name = "Generate icons from doseleft.icon";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT\"\n/usr/bin/env python3 scripts/build-icons.py\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02A8325E73270A1808F12E4D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F37AA77BA7A654F4F29EA63 /* DoseTimelineProvider.swift in Sources */,
+				15B505FB68372271023C04DC /* DoseWidget.swift in Sources */,
+				52D66F45EDA3795CA40740FA /* DoseWidgetBundle.swift in Sources */,
+				D22ED602FE856AAD7764EEDC /* LockCircularView.swift in Sources */,
+				B0E8000ACB0D9FD62CCB76A4 /* LockRectangularView.swift in Sources */,
+				659F3D9D4B90BC1F3AC4CA88 /* MediumDoseView.swift in Sources */,
+				36C1930F69991AD7A7A92D45 /* SmallDoseView.swift in Sources */,
+				9EE108A5B46D59CA4D20659E /* WidgetLogDoseIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11146C3A4F6F8A7602575D86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				677A6AF249C1ED270216B943 /* DoseComplication.swift in Sources */,
+				045A38436DD95784375383D5 /* DoseWatchApp.swift in Sources */,
+				9001B4C5331274F5C57C684D /* WatchHomeView.swift in Sources */,
+				1C8211D6056314FDFB12BA3E /* WatchLogView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52D389DDE8FC89CC93125A46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2631D334FAA912472685CE68 /* ActivityRow.swift in Sources */,
+				A5EFE643384E6ADAFDDF028B /* DoseChip.swift in Sources */,
+				3D441804EA99C9DD9BC19161 /* DoseLeftApp.swift in Sources */,
+				404782C584FA6766E54C7C1F /* DoseLeftShortcuts.swift in Sources */,
+				336AFA52BDF3222176077E99 /* DoseLogActions.swift in Sources */,
+				C646647A22222B26DBEC9FD8 /* EditLogDateSheet.swift in Sources */,
+				3BDC37F05CE386D0F419A56F /* GetRemainingIntent.swift in Sources */,
+				DDC4053C645F5CC900614DFA /* HapticTap.swift in Sources */,
+				DB5C3C6AFB393DD5C2B60B1B /* HistoryView.swift in Sources */,
+				5453E5BD91F7F9BEEA341A5F /* HomeEmptyView.swift in Sources */,
+				86D8E07E7118206BD258FB55 /* HomeView.swift in Sources */,
+				35CEFAE1A83609CEA7138D99 /* LogDoseIntent.swift in Sources */,
+				70273BADF41C87B1C3F9104B /* LogMissedIntent.swift in Sources */,
+				4DEBC2FF7400E43CBD7990AD /* MedBadge.swift in Sources */,
+				C5C6C2AD5EEE65A0F8EF1BC9 /* MedRow.swift in Sources */,
+				7939C6F18B4EC1260BE98F81 /* MedicationDetailView.swift in Sources */,
+				76FE200565C63E81D59B183F /* MedicationEditView.swift in Sources */,
+				44731D26C7026FDB602C4C28 /* MedicationEntity.swift in Sources */,
+				869CB5755B082E1C48FB442B /* MedicationLogPresentation.swift in Sources */,
+				495E6AE69D6343650435466F /* NotificationsFrame.swift in Sources */,
+				86EDD5B1412178D03B7A7305 /* OnboardingFlow.swift in Sources */,
+				92B53037DBB4E826A090BC1B /* PillStepper.swift in Sources */,
+				31355A490AEC341E39ABC2A6 /* PrimaryButton.swift in Sources */,
+				62AB84824471F8D108FBBA05 /* PrivacyFrame.swift in Sources */,
+				7B39778D22E1175278FA47A4 /* ScheduleEditView.swift in Sources */,
+				07D371A5F36379E14B66F1F3 /* SegmentedTwo.swift in Sources */,
+				7A218A7ADB310E6ADEE056F4 /* SettingsView.swift in Sources */,
+				30369F2E30554DB824D135B5 /* SplashView.swift in Sources */,
+				488A4883B9D535488B2144B1 /* ThemePreference.swift in Sources */,
+				9AFB43DE0BDDF43B61C8ABAD /* WeekdayPicker.swift in Sources */,
+				8104B02C206B9D21F8355347 /* WelcomeFrame.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF6D446BD00FE911047DA98F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C627A3B4DB178CAF74D1AFC9 /* DSTTests.swift in Sources */,
+				1797EB1AE87ED661B4FE57EC /* DoseMathTests.swift in Sources */,
+				6FB9303ED162F6BBA492C53E /* PauseTests.swift in Sources */,
+				394BA02D938CDDC85A821D24 /* PerformanceTests.swift in Sources */,
+				371B5FEAB02CEABF7AB5733D /* ResetTests.swift in Sources */,
+				4C6A88B52673652E865BA763 /* StartDateEditTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2F02E14233D575020F12DDA1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BBEFE775005B36952E760B3 /* DoseWidget */;
+			targetProxy = D8EB30ED0FDC519927AE4010 /* PBXContainerItemProxy */;
+		};
+		6710A45F3C30DD169D4BB44F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4792FFC9697CEDB117EDD084 /* DoseWatch */;
+			targetProxy = 657CCB25AC7200EBB2B0B7D7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EC6BF820EA339185D4695BC6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0F2FE4411839771282D24D5 /* de */,
+				5E7EF887041F114B7FC8C88F /* en */,
+				5BC58859062213BE9026AAB7 /* pt */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0652E12FFDC4271952A0455C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Watch/DoseWatch.entitlements;
+				INFOPLIST_FILE = Watch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		08701BBF6FC1828543522FB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Resources/DoseLeft.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1D46C00E9F8CEDC643A2643C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Resources/DoseLeft.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		36E314F8CD070B67F8EC594B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		4E66DEC03C2E8A254FD8315C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/DoseWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		560E029306221C43861CFEE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.DoseCoreTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		794A81136D8BDA2FEDFC19C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Watch/DoseWatch.entitlements;
+				INFOPLIST_FILE = Watch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		890AE6711230133B2974A0FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		A81C2BAAEAEFEF87ACEFEC81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/DoseWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.app.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3288DDBE44D027FD860E5AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doseleft.DoseCoreTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3932BDC426CC95174DA91592 /* Build configuration list for PBXProject "DoseLeft" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36E314F8CD070B67F8EC594B /* Debug */,
+				890AE6711230133B2974A0FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9F74030A115E2C40B7C01C88 /* Build configuration list for PBXNativeTarget "DoseWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A81C2BAAEAEFEF87ACEFEC81 /* Debug */,
+				4E66DEC03C2E8A254FD8315C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B560BCB709986346789D09E8 /* Build configuration list for PBXNativeTarget "DoseLeft" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D46C00E9F8CEDC643A2643C /* Debug */,
+				08701BBF6FC1828543522FB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CF991CC18E5367923EC987E2 /* Build configuration list for PBXNativeTarget "DoseCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3288DDBE44D027FD860E5AA /* Debug */,
+				560E029306221C43861CFEE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E7096D89730A4A9912365645 /* Build configuration list for PBXNativeTarget "DoseWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				794A81136D8BDA2FEDFC19C2 /* Debug */,
+				0652E12FFDC4271952A0455C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		57ED7D5CA0E160E6A0E8DE73 /* XCLocalSwiftPackageReference "DoseCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DoseCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1D99563367403CA2EE5EEA5C /* DoseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DoseCore;
+		};
+		22C18011DB8226CD2DF0E31A /* DoseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DoseCore;
+		};
+		A06D29AE8583F19E4E5B9F7B /* DoseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DoseCore;
+		};
+		C88A696F7D0A70434733FA09 /* DoseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DoseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 25DCC59DC42128CC955BA853 /* Project object */;
+}
