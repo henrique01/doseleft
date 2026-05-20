@@ -90,11 +90,16 @@ struct SettingsView: View {
                                 .foregroundStyle(DL.text2)
                         }
                         Divider().padding(.leading, 16)
-                        row {
-                            Text("Acknowledgments").font(DL.Text.body17).foregroundStyle(DL.text)
-                            Spacer()
-                            Image(systemName: "chevron.right").font(.caption).foregroundStyle(DL.text3)
+                        NavigationLink {
+                            AcknowledgmentsView()
+                        } label: {
+                            row {
+                                Text("Acknowledgments").font(DL.Text.body17).foregroundStyle(DL.text)
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(DL.text3)
+                            }
                         }
+                        .buttonStyle(.plain)
                     }
                     Spacer(minLength: 40)
                 }
