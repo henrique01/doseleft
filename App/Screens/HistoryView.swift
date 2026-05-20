@@ -129,7 +129,7 @@ struct HistoryView: View {
     }
 
     private func display(for log: DoseLog) -> String {
-        let base = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
+        let base = med.form.defaultUnitLabel
         switch log.source {
         case .reset: return "Container reset"
         case .correction: return "Adjusted \(log.doseCount > 0 ? "+" : "")\(log.doseCount)"

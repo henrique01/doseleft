@@ -9,9 +9,12 @@ struct MedicationEditView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var name: String = ""
-    @State private var icon: MedicationIcon = .pills
+    @State private var form: MedicationForm = .pen
+    @State private var iconSymbol: String = MedicationForm.pen.defaultIcon
     @State private var accent: DLAccent = .lavender
-    @State private var totalDoses: Int = 30
+    // Pen-by-default starts at 0 — the pen calculator fills this in. The
+    // onChange below restores a sensible default if the user switches off pen.
+    @State private var totalDoses: Int = 0
     @State private var trackingMode: TrackingMode = .automatic
     @State private var reminderLead: Int = 7
     @State private var isAsNeeded: Bool = false
@@ -23,8 +26,10 @@ struct MedicationEditView: View {
     @State private var startDate: Date = .now
     @State private var editingScheduleID: UUID?
     @State private var confirmDelete = false
+    @State private var showingFormPicker = false
+    @State private var showingIconPicker = false
     // Click-pen state. clicksPerDose == 0 means "not a pen" — when the user
-    // picks the .clickPen icon the calculator sheet fills these in.
+    // picks the Pen form the calculator sheet fills these in.
     @State private var clicksPerDose: Int = 0
     @State private var doseMg: Double = 0
     @State private var showingPenCalc: Bool = false
@@ -33,8 +38,8 @@ struct MedicationEditView: View {
         !name.trimmingCharacters(in: .whitespaces).isEmpty
             && totalDoses > 0
             && (isAsNeeded || !schedules.isEmpty)
-            // Pen icon requires the calculator to have set clicksPerDose.
-            && (icon != .clickPen || clicksPerDose > 0)
+            // Pen form requires the calculator to have set clicksPerDose.
+            && (form != .pen || clicksPerDose > 0)
     }
 
     private enum MedicationType: Hashable { case scheduled, asNeeded }
@@ -49,21 +54,11 @@ struct MedicationEditView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    section("Icon & color") {
-                        VStack(alignment: .leading, spacing: 14) {
-                            iconPickerRow
-                            colorPickerRow
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 14)
-                    }
-                    section("Name") {
-                        TextField("Name", text: $name, prompt: Text("Medication name"))
-                            .font(DL.Text.body17)
-                            .padding(.horizontal, 16)
-                            .frame(minHeight: 44)
-                    }
-                    if icon == .clickPen {
+                    heroHeader
+                        .padding(.top, 12)
+                        .padding(.bottom, 8)
+                    formAndColorCard
+                    if form == .pen {
                         section("Pen") {
                             penCalculatorRow
                         }
@@ -83,7 +78,7 @@ struct MedicationEditView: View {
                     } else {
                         section("Total doses in container") {
                             HStack {
-                                Text(icon.defaultUnitLabel.capitalized + "s")
+                                Text(form.defaultUnitLabel.capitalized + "s")
                                     .font(DL.Text.subhead15)
                                     .foregroundStyle(DL.text2)
                                 Spacer()
@@ -251,15 +246,23 @@ struct MedicationEditView: View {
         }
         .tint(accent.color)
         .onAppear(perform: hydrate)
-        .onChange(of: icon) { _, newValue in
-            // Leaving the pen icon clears pen-specific config; entering it
+        .onChange(of: form) { oldValue, newValue in
+            // Leaving the pen form clears pen-specific config; entering it
             // resets totalDoses so the calculator owns that value.
-            if newValue != .clickPen {
+            if newValue != .pen {
                 clicksPerDose = 0
                 doseMg = 0
+                // If we're leaving pen with the calc-owned 0, hand the user
+                // a sensible non-zero starting point for the regular stepper.
+                if oldValue == .pen && totalDoses == 0 {
+                    totalDoses = 30
+                }
             } else if clicksPerDose == 0 {
                 totalDoses = 0
             }
+            // Form change always snaps the icon back to that form's default —
+            // the user can still override it from the icon picker afterwards.
+            iconSymbol = newValue.defaultIcon
         }
         .sheet(isPresented: $showingPenCalc) {
             PenCalculatorSheet(
@@ -268,6 +271,12 @@ struct MedicationEditView: View {
                 clicksPerDose: $clicksPerDose,
                 doseMg: $doseMg
             )
+        }
+        .sheet(isPresented: $showingFormPicker) {
+            FormPickerSheet(selection: $form, accent: accent.color)
+        }
+        .sheet(isPresented: $showingIconPicker) {
+            IconPickerSheet(selection: $iconSymbol, form: form, accent: accent.color)
         }
         .confirmationDialog(
             "Delete \(name)?",
@@ -430,13 +439,13 @@ struct MedicationEditView: View {
     private func scheduleRow(_ s: ScheduleDraft, at idx: Int) -> some View {
         // For click pens the schedule row reads in clicks rather than "shots":
         // "· 12 clicks · Every day" instead of "· 1 click · Every day".
-        let displayCount = (icon == .clickPen && clicksPerDose > 0)
+        let displayCount = (form == .pen && clicksPerDose > 0)
             ? s.count * clicksPerDose
             : s.count
         Button { editingScheduleID = s.id } label: {
             HStack(spacing: 12) {
                 Text(s.timeText).font(DL.Numerals.row17).foregroundStyle(DL.text)
-                Text("· \(displayCount) \(s.unitLabel(for: icon, count: displayCount)) · \(s.weekdayText)")
+                Text("· \(displayCount) \(s.unitLabel(for: form, count: displayCount)) · \(s.weekdayText)")
                     .font(DL.Text.footnote13)
                     .foregroundStyle(DL.text2)
                     .lineLimit(1)
@@ -481,29 +490,86 @@ struct MedicationEditView: View {
         }
     }
 
-    private var iconPickerRow: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(MedicationIcon.allCases, id: \.self) { ic in
-                    Button {
-                        Haptic.tap(.light)
-                        icon = ic
-                    } label: {
-                        ZStack {
-                            Circle()
-                                .fill(icon == ic ? accent.color : DL.fill)
-                                .frame(width: 40, height: 40)
-                            Image(systemName: ic.symbolName)
-                                .font(.system(size: 18, weight: .medium))
-                                .foregroundStyle(icon == ic ? .white : DL.text2)
-                        }
-                        .overlay(Circle().stroke(icon == ic ? accent.color : .clear, lineWidth: 2))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(ic.symbolName)
+    // MARK: - Hero + Form/Color
+
+    private var heroHeader: some View {
+        VStack(spacing: 14) {
+            ZStack(alignment: .bottomTrailing) {
+                ZStack {
+                    Circle()
+                        .fill(accent.color)
+                        .frame(width: 96, height: 96)
+                    Image(systemName: iconSymbol)
+                        .font(.system(size: 38, weight: .medium))
+                        .foregroundStyle(.white)
                 }
+                Button {
+                    Haptic.tap(.light)
+                    showingIconPicker = true
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 28, height: 28)
+                            .shadow(color: .black.opacity(0.12), radius: 4, x: 0, y: 1)
+                        Image(systemName: "pencil")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(DL.text2)
+                    }
+                }
+                .buttonStyle(.plain)
+                .offset(x: 2, y: 2)
+                .accessibilityLabel("Choose icon")
             }
+            TextField("", text: $name, prompt: Text("Medication name").foregroundStyle(DL.text3))
+                .font(.system(size: 24, weight: .semibold))
+                .foregroundStyle(DL.text)
+                .multilineTextAlignment(.center)
+                .textFieldStyle(.plain)
+                .padding(.horizontal, 24)
         }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var formAndColorCard: some View {
+        VStack(spacing: 0) {
+            Button {
+                Haptic.tap(.light)
+                showingFormPicker = true
+            } label: {
+                HStack {
+                    Text("Form")
+                        .font(DL.Text.body17)
+                        .foregroundStyle(DL.text)
+                    Spacer()
+                    Text(form.displayName)
+                        .font(DL.Text.body17)
+                        .foregroundStyle(DL.text2)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(DL.text3)
+                }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 54)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            Divider().padding(.leading, 16)
+
+            HStack(spacing: 12) {
+                Text("Color")
+                    .font(DL.Text.body17)
+                    .foregroundStyle(DL.text)
+                Spacer(minLength: 8)
+                colorPickerRow
+            }
+            .padding(.horizontal, 16)
+            .frame(minHeight: 54)
+        }
+        .background(DL.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
     }
 
     private var colorPickerRow: some View {
@@ -515,7 +581,7 @@ struct MedicationEditView: View {
                 } label: {
                     Circle()
                         .fill(a.color)
-                        .frame(width: 28, height: 28)
+                        .frame(width: 22, height: 22)
                         .overlay(
                             Circle().stroke(a == accent ? a.color : .clear, lineWidth: 2)
                                 .padding(-3)
@@ -549,7 +615,10 @@ struct MedicationEditView: View {
     private func hydrate() {
         guard let existing else { return }
         name = existing.name
-        icon = MedicationIcon(rawValue: existing.iconSymbol) ?? .pills
+        // Hydrate form first; for meds saved before `formRaw` existed the
+        // accessor falls back to inferring from the icon symbol.
+        form = existing.form
+        iconSymbol = existing.iconSymbol
         accent = DLAccent.from(hex: existing.colorHex)
         totalDoses = existing.totalDoses
         startDate = existing.startDate
@@ -571,7 +640,8 @@ struct MedicationEditView: View {
         let med: Medication
         if let existing {
             existing.name = name
-            existing.iconSymbol = icon.symbolName
+            existing.iconSymbol = iconSymbol
+            existing.form = form
             existing.colorHex = accent.hex
             existing.totalDoses = totalDoses
             existing.startDate = startDate
@@ -582,8 +652,8 @@ struct MedicationEditView: View {
             existing.doseTimeRemindersEnabled = doseTimeRemindersEnabled && !isAsNeeded
             existing.runningLowNotificationEnabled = runningLowEnabled
             existing.refillNowNotificationEnabled = refillNowEnabled
-            existing.clicksPerDose = icon == .clickPen ? clicksPerDose : 0
-            existing.doseMg = icon == .clickPen ? doseMg : 0
+            existing.clicksPerDose = form == .pen ? clicksPerDose : 0
+            existing.doseMg = form == .pen ? doseMg : 0
             // Replace schedules. Rescue meds keep an empty schedule set.
             for old in existing.schedulesArray { context.delete(old) }
             existing.schedules = isAsNeeded ? [] : schedules.map { $0.toModel(medication: existing) }
@@ -591,7 +661,7 @@ struct MedicationEditView: View {
         } else {
             med = Medication(
                 name: name,
-                iconSymbol: icon.symbolName,
+                iconSymbol: iconSymbol,
                 colorHex: accent.hex,
                 totalDoses: totalDoses,
                 startDate: startDate,
@@ -602,8 +672,9 @@ struct MedicationEditView: View {
                 doseTimeRemindersEnabled: doseTimeRemindersEnabled && !isAsNeeded,
                 runningLowNotificationEnabled: runningLowEnabled,
                 refillNowNotificationEnabled: refillNowEnabled,
-                clicksPerDose: icon == .clickPen ? clicksPerDose : 0,
-                doseMg: icon == .clickPen ? doseMg : 0
+                clicksPerDose: form == .pen ? clicksPerDose : 0,
+                doseMg: form == .pen ? doseMg : 0,
+                form: form
             )
             context.insert(med)
             if !isAsNeeded {
@@ -676,15 +747,15 @@ struct ScheduleDraft: Identifiable, Hashable {
         Set(weekdays) == Set(1...7) ? "Every day" : "\(weekdays.count) days/wk"
     }
 
-    func unitLabel(for icon: MedicationIcon) -> String {
-        unitLabel(for: icon, count: count)
+    func unitLabel(for form: MedicationForm) -> String {
+        unitLabel(for: form, count: count)
     }
 
     /// Variant that pluralises against a caller-supplied count — useful when
     /// the displayed number differs from the stored `count` (e.g. click pens
     /// multiply by `clicksPerDose` for the visible label).
-    func unitLabel(for icon: MedicationIcon, count: Int) -> String {
-        let base = icon.defaultUnitLabel
+    func unitLabel(for form: MedicationForm, count: Int) -> String {
+        let base = form.defaultUnitLabel
         return count == 1 ? base : base + "s"
     }
 }

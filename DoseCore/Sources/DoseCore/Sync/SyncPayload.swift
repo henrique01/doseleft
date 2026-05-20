@@ -20,6 +20,9 @@ public struct MedicationDTO: Codable, Sendable, Hashable {
     public var isActive: Bool
     public var createdAt: Date
     public var pausedAt: Date?
+    /// Optional so older peers that don't send this field still decode; the
+    /// receiver infers form from `iconSymbol` when absent.
+    public var formRaw: String?
 
     public init(from m: Medication) {
         self.id = m.id
@@ -38,6 +41,7 @@ public struct MedicationDTO: Codable, Sendable, Hashable {
         self.isActive = m.isActive
         self.createdAt = m.createdAt
         self.pausedAt = m.pausedAt
+        self.formRaw = m.formRaw
     }
 
     /// Apply this DTO's fields onto an existing `Medication`. Caller chooses
@@ -59,6 +63,7 @@ public struct MedicationDTO: Codable, Sendable, Hashable {
         m.isActive = isActive
         m.createdAt = createdAt
         m.pausedAt = pausedAt
+        m.formRaw = formRaw ?? MedicationForm.inferred(fromIcon: iconSymbol).rawValue
     }
 }
 

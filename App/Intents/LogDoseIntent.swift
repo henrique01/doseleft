@@ -20,7 +20,7 @@ struct LogDoseIntent: AppIntent {
         ctx.insert(log)
         ctx.dlSave()
         await NotificationScheduler.shared.rescheduleAll(meds: [med])
-        let unit = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
+        let unit = med.form.defaultUnitLabel
         let unitText = count == 1 ? unit : unit + "s"
         return .result(dialog: "Logged \(count) \(unitText) of \(med.name).")
     }

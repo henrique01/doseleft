@@ -99,7 +99,7 @@ public actor NotificationScheduler {
     private func scheduleLowStockByCount(for med: Medication, now: Date, calendar: Calendar) async {
         let remaining = DoseMath.dosesRemaining(med: med, at: now, calendar: calendar)
         guard remaining > 0, remaining <= med.reminderLeadDoses else { return }
-        let unit = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
+        let unit = med.form.defaultUnitLabel
         let unitText = remaining == 1 ? unit : unit + "s"
         let content = UNMutableNotificationContent()
         content.title = "\(med.name) is running low"
@@ -161,7 +161,7 @@ public actor NotificationScheduler {
                 let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
                 let content = UNMutableNotificationContent()
                 content.title = "Take \(med.name)"
-                content.body = "\(schedule.doseCount) \(MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose")\(schedule.doseCount == 1 ? "" : "s") due."
+                content.body = "\(schedule.doseCount) \(med.form.defaultUnitLabel)\(schedule.doseCount == 1 ? "" : "s") due."
                 content.interruptionLevel = interruptionLevel
                 content.sound = sound
                 let req = UNNotificationRequest(

@@ -101,7 +101,7 @@ struct MedRow: View {
     }
 
     private func unitLabel(for count: Int) -> String {
-        let base = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
+        let base = med.form.defaultUnitLabel
         return count == 1 ? base : base + "s"
     }
 

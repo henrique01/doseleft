@@ -343,7 +343,7 @@ struct MedicationDetailView: View {
         // Show "dose"/"doses" so the running-low banner and hero ring stay
         // legible — schedule rows already do their own click conversion.
         if med.isClickPen { return count == 1 ? "dose" : "doses" }
-        let base = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
+        let base = med.form.defaultUnitLabel
         return count == 1 ? base : base + "s"
     }
 

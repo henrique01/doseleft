@@ -10,6 +10,11 @@ public final class Medication {
     public var name: String = ""
     public var iconSymbol: String = MedicationIcon.pills.symbolName
     public var colorHex: String = "#A78BD5"
+    /// Stored medication form (Tablet, Inhaler, …). Drives unit labels and the
+    /// default icon. Defaults to `tablet` for back-compat — meds saved before
+    /// this field existed will read `"tablet"` here and the edit screen
+    /// re-derives form from `iconSymbol` on first hydration.
+    public var formRaw: String = MedicationForm.tablet.rawValue
     public var totalDoses: Int = 0
     public var startDate: Date = Date()
     public var trackingModeRaw: String = TrackingMode.automatic.rawValue
@@ -68,12 +73,14 @@ public final class Medication {
         createdAt: Date = .now,
         pausedAt: Date? = nil,
         clicksPerDose: Int = 0,
-        doseMg: Double = 0
+        doseMg: Double = 0,
+        form: MedicationForm? = nil
     ) {
         self.id = id
         self.name = name
         self.iconSymbol = iconSymbol
         self.colorHex = colorHex
+        self.formRaw = (form ?? MedicationForm.inferred(fromIcon: iconSymbol)).rawValue
         self.totalDoses = totalDoses
         self.startDate = startDate
         self.trackingModeRaw = trackingMode.rawValue
@@ -118,6 +125,25 @@ public final class Medication {
     public var trackingMode: TrackingMode {
         get { TrackingMode(rawValue: trackingModeRaw) ?? .automatic }
         set { trackingModeRaw = newValue.rawValue }
+    }
+
+    /// Semantic form (Tablet, Inhaler, …). Falls back to inferring from the
+    /// stored `iconSymbol` for meds created before the field existed.
+    public var form: MedicationForm {
+        get {
+            if let f = MedicationForm(rawValue: formRaw) { return f }
+            return MedicationForm.inferred(fromIcon: iconSymbol)
+        }
+        set { formRaw = newValue.rawValue }
+    }
+
+    /// Singular-or-plural unit label for `count` items of this medication
+    /// ("1 tablet" / "3 tablets"). Click pens always report doses for the
+    /// remaining-stock display; the click count belongs on schedule rows.
+    public func unitLabel(for count: Int) -> String {
+        if isClickPen { return count == 1 ? "dose" : "doses" }
+        let base = form.defaultUnitLabel
+        return count == 1 ? base : base + "s"
     }
 
     /// Non-optional view of `schedules` for ergonomic call sites.
