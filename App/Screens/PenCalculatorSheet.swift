@@ -135,25 +135,34 @@ struct PenCalculatorSheet: View {
     }
 
     private var inputsSection: some View {
+        // Grid keeps the label / − / value / + / unit columns aligned across
+        // every row, including the integer "Units per mL" row. Without it
+        // each HStack picks its own spacing and the +/− buttons land at
+        // different x positions per row.
         section("Pen") {
-            VStack(spacing: 0) {
-                tenthsRow(title: "Pen volume", unit: "mL",
-                          tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
-                Divider().padding(.leading, 16)
-                tenthsRow(title: "Concentration", unit: "mg/mL",
-                          tenths: $concentrationTenths, range: Self.concentrationRange, field: .concentration)
-                Divider().padding(.leading, 16)
-                tenthsRow(title: "Prescribed dose", unit: "mg",
-                          tenths: $doseTenths, range: Self.doseRange, field: .dose)
-                Divider().padding(.leading, 16)
-                HStack {
-                    Text("Units per mL").font(DL.Text.body17).foregroundStyle(DL.text)
-                    Spacer()
-                    PillStepper(value: $unitsPerML, range: 10...500, size: .small, editable: true)
-                }
-                .padding(.horizontal, 16)
-                .frame(minHeight: 54)
+            Grid(alignment: .center, horizontalSpacing: 10, verticalSpacing: 0) {
+                tenthsGridRow(title: "Pen volume", unit: "mL",
+                              tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
+                gridDivider
+                tenthsGridRow(title: "Concentration", unit: "mg/mL",
+                              tenths: $concentrationTenths, range: Self.concentrationRange, field: .concentration)
+                gridDivider
+                tenthsGridRow(title: "Dose", unit: "mg",
+                              tenths: $doseTenths, range: Self.doseRange, field: .dose)
+                gridDivider
+                intGridRow(title: "Units per mL", value: $unitsPerML, range: 10...500)
             }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    /// Five-column divider spanning the whole row (label, −, value, +, unit).
+    @ViewBuilder
+    private var gridDivider: some View {
+        GridRow {
+            Divider()
+                .gridCellColumns(5)
+                .gridCellUnsizedAxes(.horizontal)
         }
     }
 
@@ -173,17 +182,27 @@ struct PenCalculatorSheet: View {
 
     // MARK: - Row builders
 
+    /// Fixed widths for the three trailing columns. The label column takes
+    /// whatever's left; the value column is wide enough for a 4-digit
+    /// formatted number ("999,9"); the unit column fits "mg/mL".
+    private static let valueColumnWidth: CGFloat = 78
+    private static let unitColumnWidth: CGFloat = 54
+
     @ViewBuilder
-    private func tenthsRow(
+    private func tenthsGridRow(
         title: String,
         unit: String,
         tenths: Binding<Int>,
         range: ClosedRange<Int>,
         field: Field
     ) -> some View {
-        HStack(spacing: 10) {
-            Text(title).font(DL.Text.body17).foregroundStyle(DL.text)
-            Spacer(minLength: 8)
+        GridRow {
+            Text(title)
+                .font(DL.Text.body17)
+                .foregroundStyle(DL.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
+                .frame(maxWidth: .infinity, alignment: .leading)
             stepButton(symbol: "minus") {
                 tenths.wrappedValue = max(range.lowerBound, tenths.wrappedValue - 5)
             }
@@ -192,7 +211,7 @@ struct PenCalculatorSheet: View {
                 .multilineTextAlignment(.center)
                 .font(DL.Numerals.row17)
                 .foregroundStyle(DL.text)
-                .frame(minWidth: 64)
+                .frame(width: Self.valueColumnWidth)
                 .focused($focused, equals: field)
             stepButton(symbol: "plus") {
                 tenths.wrappedValue = min(range.upperBound, tenths.wrappedValue + 5)
@@ -200,12 +219,41 @@ struct PenCalculatorSheet: View {
             Text(unit)
                 .font(DL.Text.subhead15)
                 .foregroundStyle(DL.text2)
-                .frame(minWidth: 44, alignment: .leading)
+                .frame(width: Self.unitColumnWidth, alignment: .leading)
         }
-        .padding(.horizontal, 16)
         .frame(minHeight: 54)
         .contentShape(Rectangle())
         .onTapGesture { focused = field }
+    }
+
+    @ViewBuilder
+    private func intGridRow(
+        title: String,
+        value: Binding<Int>,
+        range: ClosedRange<Int>
+    ) -> some View {
+        GridRow {
+            Text(title)
+                .font(DL.Text.body17)
+                .foregroundStyle(DL.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            stepButton(symbol: "minus") {
+                value.wrappedValue = max(range.lowerBound, value.wrappedValue - 1)
+            }
+            Text("\(value.wrappedValue)")
+                .font(DL.Numerals.row17)
+                .foregroundStyle(DL.text)
+                .frame(width: Self.valueColumnWidth)
+            stepButton(symbol: "plus") {
+                value.wrappedValue = min(range.upperBound, value.wrappedValue + 1)
+            }
+            // Empty unit cell so the column structure matches the decimal rows.
+            Color.clear
+                .frame(width: Self.unitColumnWidth, height: 1)
+        }
+        .frame(minHeight: 54)
     }
 
     @ViewBuilder
