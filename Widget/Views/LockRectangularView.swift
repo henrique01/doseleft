@@ -8,7 +8,7 @@ struct LockRectangularView: View {
     var body: some View {
         if let m = entry.meds.first {
             HStack(spacing: 10) {
-                DLRing(progress: m.fillFraction, size: 40, stroke: 3, color: .white, trackColor: .white.opacity(0.2)) {
+                DLRing(progress: m.fillFraction, size: 40, stroke: 8, color: .white, trackColor: .white.opacity(0.2)) {
                     Text("\(m.isAsNeeded ? m.dosesRemaining : m.daysLeft)")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)

@@ -82,7 +82,7 @@ struct AppIconBlock: View {
             .frame(width: size, height: size)
             .overlay(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).strokeBorder(Color.black.opacity(0.06), lineWidth: 0.5))
             .overlay {
-                DLRing(progress: 0.70, size: size * 0.72, stroke: size * 0.07, color: accent,
+                DLRing(progress: 0.75, size: size * 0.72, stroke: size * 0.141, color: accent,
                        trackColor: accent.opacity(0.18), animate: false)
             }
     }

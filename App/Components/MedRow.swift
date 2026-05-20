@@ -42,7 +42,7 @@ struct MedRow: View {
 
             HStack(spacing: 12) {
                 statsColumn
-                DLRing(progress: fillFraction, size: 36, stroke: 3, color: accent) { EmptyView() }
+                DLRing(progress: fillFraction, size: 36, stroke: 7, color: accent) { EmptyView() }
             }
         }
         .padding(.horizontal, 20)

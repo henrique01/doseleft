@@ -91,7 +91,7 @@ struct ComplicationView: View {
         let accent = DLAccent.from(hex: entry.accentHex).color
         switch family {
         case .accessoryCircular:
-            DLRing(progress: entry.fill, size: 38, stroke: 2.5, color: accent, trackColor: .white.opacity(0.2)) {
+            DLRing(progress: entry.fill, size: 38, stroke: 6.75, color: accent, trackColor: .white.opacity(0.2)) {
                 Text("\(primaryNumber)")
                     .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
@@ -99,7 +99,7 @@ struct ComplicationView: View {
         case .accessoryInline:
             Text(inlineText).font(.system(.body, design: .rounded))
         default:
-            DLRing(progress: entry.fill, size: 38, stroke: 2.5, color: accent, trackColor: .white.opacity(0.2)) {
+            DLRing(progress: entry.fill, size: 38, stroke: 6.75, color: accent, trackColor: .white.opacity(0.2)) {
                 Text("\(primaryNumber)")
                     .font(.system(size: 16, weight: .bold, design: .rounded))
             }

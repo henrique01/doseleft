@@ -89,7 +89,7 @@ struct WatchHomeView: View {
         let unit = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
         let unitText = remaining == 1 ? unit : unit + "s"
         return HStack(spacing: 8) {
-            DLRing(progress: fill, size: 32, stroke: 2.5, color: accent, trackColor: .white.opacity(0.12))
+            DLRing(progress: fill, size: 32, stroke: 5.4, color: accent, trackColor: .white.opacity(0.12))
             VStack(alignment: .leading, spacing: 1) {
                 Text(med.name).font(.system(size: 12, weight: .semibold)).lineLimit(1)
                 if med.isAsNeeded {

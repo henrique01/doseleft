@@ -22,7 +22,13 @@ public enum MissedDosePlanning {
 
         struct Key: Hashable { let t: Date; let n: Int }
         var suppressed: [Key: Int] = [:]
+        var lastResetAt: Date?
         for log in med.logsArray {
+            if log.source == .reset {
+                if lastResetAt.map({ log.timestamp > $0 }) ?? true {
+                    lastResetAt = log.timestamp
+                }
+            }
             guard log.timestamp >= dayStart && log.timestamp < dayEnd else { continue }
             switch log.source {
             case .missed:
@@ -45,6 +51,12 @@ public enum MissedDosePlanning {
         candidates.sort { $0.0 > $1.0 }
 
         for (when, doseCount) in candidates {
+            // A reset re-baselines the container, refunding everything used up
+            // to that point. Any scheduled dose at or before the most recent
+            // reset is already accounted for — you can't "miss" it again.
+            if let lastResetAt, lastResetAt >= when {
+                continue
+            }
             let key = Key(t: when, n: doseCount)
             let used = suppressed[key, default: 0]
             if used > 0 {

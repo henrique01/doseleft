@@ -22,15 +22,20 @@ struct WatchLogView: View {
                 detailContent
             }
         }
-        .padding()
-        .navigationTitle(med.name)
-        .navigationBarTitleDisplayMode(.inline)
+        .padding(.horizontal)
+        .padding(.top, 24)
+        .padding(.bottom, 16)
     }
 
     private var detailContent: some View {
         VStack(spacing: 10) {
+            Text(med.name)
+                .font(.system(size: 14, weight: .semibold))
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(maxWidth: .infinity)
             DLRing(progress: med.totalDoses > 0 ? Double(remaining) / Double(med.totalDoses) : 0,
-                   size: 80, stroke: 4, color: accent, trackColor: .white.opacity(0.12)) {
+                   size: 72, stroke: 7, color: accent, trackColor: .white.opacity(0.12)) {
                 Text("\(remaining)").font(.system(size: 24, weight: .bold, design: .rounded))
             }
             Text("\(remaining) of \(med.totalDoses) left").font(.system(size: 11)).foregroundStyle(.secondary)
@@ -62,6 +67,11 @@ struct WatchLogView: View {
 
     private var confirmation: some View {
         VStack(spacing: 10) {
+            Text(med.name)
+                .font(.system(size: 14, weight: .semibold))
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(maxWidth: .infinity)
             ZStack {
                 Circle().fill(accent).frame(width: 56, height: 56)
                 Image(systemName: lastAction == .missed ? "exclamationmark" : "checkmark")
@@ -76,7 +86,6 @@ struct WatchLogView: View {
                 Text("Logged \(count) \(count == 1 ? unit : unit + "s")")
                     .font(.system(size: 14, weight: .bold))
             }
-            Text(med.name).font(.system(size: 11)).foregroundStyle(.secondary)
             HStack(spacing: 4) {
                 Text("\(remaining)").font(.system(size: 14, weight: .bold, design: .rounded))
                 Text("left").font(.system(size: 11)).foregroundStyle(.secondary)

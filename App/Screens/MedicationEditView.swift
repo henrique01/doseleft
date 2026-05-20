@@ -10,7 +10,7 @@ struct MedicationEditView: View {
 
     @State private var name: String = ""
     @State private var icon: MedicationIcon = .pills
-    @State private var accent: DLAccent = .sage
+    @State private var accent: DLAccent = .lavender
     @State private var totalDoses: Int = 30
     @State private var trackingMode: TrackingMode = .automatic
     @State private var reminderLead: Int = 7

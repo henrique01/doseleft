@@ -11,7 +11,7 @@ struct SplashView: View {
         ZStack {
             DL.Light.bg.ignoresSafeArea()
             VStack(spacing: 32) {
-                DLRing(progress: 0.70, size: 180, stroke: 16, color: accent, animate: false) {
+                DLRing(progress: 0.75, size: 180, stroke: 35, color: accent, animate: false) {
                     EmptyView()
                 }
                 Text("DoseLeft")

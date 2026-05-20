@@ -7,7 +7,7 @@ struct LockCircularView: View {
 
     var body: some View {
         if let m = entry.meds.first {
-            DLRing(progress: m.fillFraction, size: 50, stroke: 3,
+            DLRing(progress: m.fillFraction, size: 50, stroke: 10,
                    color: .white,
                    trackColor: .white.opacity(0.2)) {
                 VStack(spacing: 0) {

@@ -232,10 +232,11 @@ struct PenCalculatorSheet: View {
     }
 
     private var entryModeToggle: some View {
-        SegmentedTwo(selection: $entryMode, options: [
-            (.concentration, "mg/mL"),
-            (.totalMg, "Total mg"),
-        ])
+        Picker("", selection: $entryMode) {
+            Text("mg/mL").tag(ConcentrationEntryMode.concentration)
+            Text("Total mg").tag(ConcentrationEntryMode.totalMg)
+        }
+        .pickerStyle(.segmented)
     }
 
     /// Small derived-value line under the active concentration/total-mg row,

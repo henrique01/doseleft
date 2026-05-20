@@ -10,7 +10,6 @@
 		0205B0BFE90CCFB9688DFD34 /* DoseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A06D29AE8583F19E4E5B9F7B /* DoseCore */; };
 		045A38436DD95784375383D5 /* DoseWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B62BDE4F267432CDF717486 /* DoseWatchApp.swift */; };
 		062C24EECC71ED2881DEC6F6 /* DoseWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0F0B17BCEC40BDA491C1E710 /* DoseWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		07D371A5F36379E14B66F1F3 /* SegmentedTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D25E488453888CF77D35B9 /* SegmentedTwo.swift */; };
 		0B1C305DFBB5D9DE23305483 /* PreviewFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC43A90BCAB9B3D6B4C13D67 /* PreviewFixtures.swift */; };
 		15B505FB68372271023C04DC /* DoseWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A753A45C10035C601CBD5D1 /* DoseWidget.swift */; };
 		1797EB1AE87ED661B4FE57EC /* DoseMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7C50AA83F50E28D493220 /* DoseMathTests.swift */; };
@@ -67,6 +66,8 @@
 		D22ED602FE856AAD7764EEDC /* LockCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AEB1381BD707866C03F9F9 /* LockCircularView.swift */; };
 		DB5C3C6AFB393DD5C2B60B1B /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7DBEFE90E19EA3AB52A9C /* HistoryView.swift */; };
 		DDC4053C645F5CC900614DFA /* HapticTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014D910294513FE42F32D7E4 /* HapticTap.swift */; };
+		E73C3E2C5EC3A2DDB3F5D645 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A4CBD59352532046F549349 /* AppIcon.icon */; };
+		ECAD311CC5615E3508D02E5F /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A4CBD59352532046F549349 /* AppIcon.icon */; };
 		EE19065209CA6C79B77F1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9590ED3246BAE507A1DC40F /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -122,8 +123,8 @@
 		10954F5F9EED08D62EADCA7C /* HomeEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
 		1117066C0DBD8A1B91C1643A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12885961191DE6E204E30D6C /* LogMissedIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMissedIntent.swift; sourceTree = "<group>"; };
-		13D25E488453888CF77D35B9 /* SegmentedTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedTwo.swift; sourceTree = "<group>"; };
 		1452D7B69267EB731A7CA7D7 /* StartDateEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDateEditTests.swift; sourceTree = "<group>"; };
+		1A4CBD59352532046F549349 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationLogPresentation.swift; sourceTree = "<group>"; };
 		1F06103BD64D103777787F81 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		2A2E31871291BB9BBD157041 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -225,6 +226,7 @@
 				3557C272CBCEE07903842638 /* Packages */,
 				9B713D7619CA748E954FAAFA /* Watch */,
 				6F46C5C9A0FA700BDEB51F77 /* Widget */,
+				1A4CBD59352532046F549349 /* AppIcon.icon */,
 				812CF97149B115E16FEF163C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -343,7 +345,6 @@
 				FC2BFE63E1C8CADDB0CE6366 /* MedRow.swift */,
 				54B2EBD5865D72DD47F56743 /* PillStepper.swift */,
 				9B19AD321B8FC2F7C6C1FECB /* PrimaryButton.swift */,
-				13D25E488453888CF77D35B9 /* SegmentedTwo.swift */,
 				DAFCCDD9F53DBAAAEC38138A /* WeekdayPicker.swift */,
 			);
 			path = Components;
@@ -438,6 +439,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7096D89730A4A9912365645 /* Build configuration list for PBXNativeTarget "DoseWatch" */;
 			buildPhases = (
+				D6692F4ECFF7316F76F5F325 /* Generate raster fallback icon from AppIcon.icon (watchOS) */,
 				11146C3A4F6F8A7602575D86 /* Sources */,
 				CC87F14C4990BCE988953C34 /* Resources */,
 				5F88358D2DBDAE6E3D721C27 /* Frameworks */,
@@ -496,7 +498,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B560BCB709986346789D09E8 /* Build configuration list for PBXNativeTarget "DoseLeft" */;
 			buildPhases = (
-				F5877A9DE0BA9F46E824E3CE /* Generate icons from doseleft.icon */,
+				1A6984CB52D3210527EE6C50 /* Generate raster fallback icon from AppIcon.icon (iOS) */,
 				52D389DDE8FC89CC93125A46 /* Sources */,
 				5767A64C86942ABD1913FC55 /* Resources */,
 				04E68415FF157FDCDB84714E /* Frameworks */,
@@ -576,6 +578,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E73C3E2C5EC3A2DDB3F5D645 /* AppIcon.icon in Resources */,
 				EE19065209CA6C79B77F1921 /* Assets.xcassets in Resources */,
 				A46454F11DD24F8BBC3E07F4 /* Localizable.strings in Resources */,
 			);
@@ -585,6 +588,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECAD311CC5615E3508D02E5F /* AppIcon.icon in Resources */,
 				6079DC816E33B06B58D4EB5A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,7 +596,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F5877A9DE0BA9F46E824E3CE /* Generate icons from doseleft.icon */ = {
+		1A6984CB52D3210527EE6C50 /* Generate raster fallback icon from AppIcon.icon (iOS) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -600,12 +604,12 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/doseleft.icon/icon.json",
-				"$(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-2-track (1).svg",
-				"$(SRCROOT)/doseleft.icon/Assets/DoseLeft-icon-3-arc (2).svg",
+				"$(SRCROOT)/AppIcon.icon/icon.json",
+				"$(SRCROOT)/AppIcon.icon/Assets/DoseLeft-icon-E-track.svg",
+				"$(SRCROOT)/AppIcon.icon/Assets/DoseLeft-icon-E-arc.svg",
 				"$(SRCROOT)/scripts/build-icons.py",
 			);
-			name = "Generate icons from doseleft.icon";
+			name = "Generate raster fallback icon from AppIcon.icon (iOS)";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -613,7 +617,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\n/usr/bin/env python3 scripts/build-icons.py\n";
+			shellScript = "cd \"$SRCROOT\"\n/usr/bin/env python3 scripts/build-icons.py ios\n";
+		};
+		D6692F4ECFF7316F76F5F325 /* Generate raster fallback icon from AppIcon.icon (watchOS) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/AppIcon.icon/icon.json",
+				"$(SRCROOT)/AppIcon.icon/Assets/DoseLeft-icon-E-track.svg",
+				"$(SRCROOT)/AppIcon.icon/Assets/DoseLeft-icon-E-arc.svg",
+				"$(SRCROOT)/scripts/build-icons.py",
+			);
+			name = "Generate raster fallback icon from AppIcon.icon (watchOS)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Watch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT\"\n/usr/bin/env python3 scripts/build-icons.py watch\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -676,7 +703,6 @@
 				31355A490AEC341E39ABC2A6 /* PrimaryButton.swift in Sources */,
 				62AB84824471F8D108FBBA05 /* PrivacyFrame.swift in Sources */,
 				7B39778D22E1175278FA47A4 /* ScheduleEditView.swift in Sources */,
-				07D371A5F36379E14B66F1F3 /* SegmentedTwo.swift in Sources */,
 				7A218A7ADB310E6ADEE056F4 /* SettingsView.swift in Sources */,
 				30369F2E30554DB824D135B5 /* SplashView.swift in Sources */,
 				488A4883B9D535488B2144B1 /* ThemePreference.swift in Sources */,

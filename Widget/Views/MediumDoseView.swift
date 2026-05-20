@@ -50,7 +50,7 @@ struct MediumDoseView: View {
             statsColumn(for: m)
             // Tap to log a dose via the widget intent.
             Button(intent: WidgetLogDoseIntent(medicationID: m.id.uuidString)) {
-                DLRing(progress: m.fillFraction, size: 22, stroke: 2.2, color: accent)
+                DLRing(progress: m.fillFraction, size: 22, stroke: 4.3, color: accent)
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Log dose for \(m.name)")

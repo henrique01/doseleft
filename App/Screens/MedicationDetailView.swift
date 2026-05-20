@@ -77,7 +77,7 @@ struct MedicationDetailView: View {
     }
 
     private var heroRing: some View {
-        DLRing(progress: fillFraction, size: 200, stroke: 5, color: accent) {
+        DLRing(progress: fillFraction, size: 200, stroke: 11, color: accent) {
             VStack(spacing: 6) {
                 Text("\(med.isAsNeeded ? remaining : daysLeft)")
                     .font(DL.Numerals.display(80, weight: .bold))

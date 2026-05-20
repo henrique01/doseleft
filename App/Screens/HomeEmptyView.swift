@@ -7,7 +7,7 @@ struct HomeEmptyView: View {
     var body: some View {
         VStack(spacing: 26) {
             ZStack {
-                DLRing(progress: 0, size: 120, stroke: 3,
+                DLRing(progress: 0, size: 120, stroke: 24,
                        color: DL.Light.tertiary,
                        trackColor: DL.Light.separator, animate: false)
                 Image(systemName: "pills.fill")

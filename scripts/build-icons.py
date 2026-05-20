@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 """
-Generate AppIcon-1024.png from doseleft.icon/.
+Generate raster fallback AppIcon-1024.png from AppIcon.icon/.
 
-Single source of truth for the app icon is the Apple Icon Composer document
-at `doseleft.icon/`. This script reads `icon.json` and the SVG layers in
-`Assets/`, rasterises them, and writes:
+The primary app icon on iOS 26+ / watchOS 26+ is the Apple Icon Composer
+document at `AppIcon.icon/`, which Xcode hands directly to the OS so it can
+render the Liquid Glass material at runtime. This script exists to produce
+a flat-raster fallback for users on iOS 17–25 and watchOS 10–25, which
+don't support the .icon format.
+
+It reads `icon.json` and the SVG layers in `Assets/`, rasterises them, and
+writes a 1024×1024 PNG to each of:
 
   - App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+  - Watch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
 
-The on-launch splash is rendered live by App/Screens/SplashView.swift using
-the same DLRing component the rest of the app uses — that keeps the splash
-visuals aligned with the running app rather than baking a separate PNG that
-iOS scales differently than SwiftUI's Image view does.
+Xcode prefers `.icon` when running on iOS/watchOS 26+ and falls back to
+the `.appiconset` PNG on older OSes.
 
 Run from the repo root: `python3 scripts/build-icons.py`.
-Wired as a pre-build phase in project.yml so it reruns on icon edits.
+Wired as a pre-build phase on both DoseLeft and DoseWatch in project.yml.
 """
 from __future__ import annotations
 
@@ -73,11 +77,14 @@ except ImportError:
 
 
 ROOT = Path(__file__).resolve().parent.parent
-ICON_DIR = ROOT / "doseleft.icon"
+ICON_DIR = ROOT / "AppIcon.icon"
 ICON_JSON = ICON_DIR / "icon.json"
 ASSETS_DIR = ICON_DIR / "Assets"
 
-APPICON_OUT = ROOT / "App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
+APPICON_OUTS_BY_TARGET = {
+    "ios":   [ROOT / "App/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"],
+    "watch": [ROOT / "Watch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"],
+}
 
 # Brand tokens (mirror DL.Light in DoseCore/DesignSystem/DLTokens.swift).
 BG_HEX = "#FAFAF7"
@@ -146,8 +153,13 @@ def _composite_icon() -> Image.Image:
             fill = layer.get("fill", {})
             if "solid" in fill:
                 rgb = _displayp3_to_rgb(fill["solid"])
+            elif "linear-gradient" in fill:
+                # Single-fill rasteriser: average the stops so the PNG tracks
+                # palette edits to icon.json without code changes.
+                stops = [_displayp3_to_rgb(s) for s in fill["linear-gradient"]]
+                rgb = tuple(sum(c) // len(stops) for c in zip(*stops))  # type: ignore[assignment]
             else:
-                rgb = (123, 156, 196)  # dustyBlue fallback
+                rgb = _hex_to_rgb("#A78BD5")  # lavender fallback
 
             layer_img = _rasterise_svg_layer(svg_path, rgb, ICON_PX)
 
@@ -170,18 +182,30 @@ def _is_up_to_date(inputs: list[Path], outputs: list[Path]) -> bool:
 
 
 def main() -> int:
+    # Optional target arg: `ios`, `watch`, or omitted (= both). Each Xcode
+    # prebuild phase passes its own platform so the two scripts don't claim
+    # the same output file — that would be a duplicate-producer error.
+    target = sys.argv[1] if len(sys.argv) > 1 else None
+    if target and target not in APPICON_OUTS_BY_TARGET:
+        sys.stderr.write(f"error: unknown target '{target}' (expected: ios | watch)\n")
+        return 2
+
+    outputs = (
+        APPICON_OUTS_BY_TARGET[target]
+        if target
+        else [p for paths in APPICON_OUTS_BY_TARGET.values() for p in paths]
+    )
     inputs = [ICON_JSON, *sorted(ASSETS_DIR.glob("*.svg")), Path(__file__)]
-    outputs = [APPICON_OUT]
 
     if _is_up_to_date(inputs, outputs):
         print("build-icons: up to date, skipping")
         return 0
 
-    APPICON_OUT.parent.mkdir(parents=True, exist_ok=True)
-
     icon = _composite_icon()
-    icon.save(APPICON_OUT, "PNG")
-    print(f"build-icons: wrote {APPICON_OUT.relative_to(ROOT)}")
+    for out in outputs:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        icon.save(out, "PNG")
+        print(f"build-icons: wrote {out.relative_to(ROOT)}")
 
     return 0
 

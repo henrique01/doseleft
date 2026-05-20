@@ -5,7 +5,7 @@ import SwiftUI
 /// **only** in that medication's icon background and progress ring — never in
 /// chrome, never in alerts. This is what makes the app feel calm.
 public enum DLAccent: String, CaseIterable, Identifiable, Sendable {
-    case sage, lavender, terracotta, plum, ochre, dustyRose, slate, moss
+    case lavender, sage, terracotta, plum, ochre, dustyRose, slate, moss
 
     public var id: String { rawValue }
 
