@@ -16,13 +16,21 @@ struct PenCalculatorSheet: View {
     @Binding var clicksPerDose: Int
     @Binding var doseMg: Double
 
-    @State private var penVolumeML: Double
-    @State private var concentrationMgPerML: Double
-    @State private var doseMgInput: Double
+    // Decimal inputs are stored as integer "tenths" so the number-pad keyboard
+    // is all we ever need: the user types "25" and the formatter inserts the
+    // locale's decimal separator to show "2,5" (or "2.5" in en). Each step
+    // button adjusts by 5 tenths (= 0.5). Ranges keep results sensible.
+    @State private var penVolumeTenths: Int            // 1...999  (0.1–99.9 mL)
+    @State private var concentrationTenths: Int        // 1...9999 (0.1–999.9 mg/mL)
+    @State private var doseTenths: Int                 // 1...999  (0.1–99.9 mg)
     @State private var unitsPerML: Int
 
     @FocusState private var focused: Field?
     private enum Field: Hashable { case volume, concentration, dose }
+
+    private static let volumeRange = 1...999
+    private static let concentrationRange = 1...9999
+    private static let doseRange = 1...999
 
     init(
         accent: Color,
@@ -37,20 +45,25 @@ struct PenCalculatorSheet: View {
         // Seed inputs from the parent form when re-opening the sheet.
         let initialClicks = max(0, clicksPerDose.wrappedValue)
         let initialDose = doseMg.wrappedValue
-        let initialDoses = max(0, totalDoses.wrappedValue)
         // Sensible defaults: 3 mL pen at 100 units/mL is the KwikPen norm.
-        self._penVolumeML = State(initialValue: 3.0)
-        self._concentrationMgPerML = State(
-            initialValue: (initialDose > 0 && initialClicks > 0)
-                ? (initialDose / Double(initialClicks)) * 100.0
-                : 10.0
+        self._penVolumeTenths = State(initialValue: 30)            // 3.0 mL
+        let seededConcentration: Int = {
+            guard initialDose > 0, initialClicks > 0 else { return 100 } // 10.0
+            let mgPerML = (initialDose / Double(initialClicks)) * 100.0
+            return max(1, Int((mgPerML * 10).rounded()))
+        }()
+        self._concentrationTenths = State(initialValue: seededConcentration)
+        self._doseTenths = State(
+            initialValue: initialDose > 0 ? max(1, Int((initialDose * 10).rounded())) : 50
         )
-        self._doseMgInput = State(initialValue: initialDose > 0 ? initialDose : 5.0)
         self._unitsPerML = State(initialValue: 100)
-        _ = initialDoses // unused: totalDoses is fully derived from the other inputs
     }
 
     // MARK: - Derived
+
+    private var penVolumeML: Double { Double(penVolumeTenths) / 10.0 }
+    private var concentrationMgPerML: Double { Double(concentrationTenths) / 10.0 }
+    private var doseMgInput: Double { Double(doseTenths) / 10.0 }
 
     private var totalClicks: Int {
         Int((penVolumeML * Double(unitsPerML)).rounded())
@@ -71,6 +84,8 @@ struct PenCalculatorSheet: View {
     private var canApply: Bool {
         derivedClicksPerDose > 0 && dosesPerPen > 0 && doseMgInput > 0 && concentrationMgPerML > 0
     }
+
+    private var decimalSeparator: String { Locale.current.decimalSeparator ?? "." }
 
     var body: some View {
         NavigationStack {
@@ -122,11 +137,14 @@ struct PenCalculatorSheet: View {
     private var inputsSection: some View {
         section("Pen") {
             VStack(spacing: 0) {
-                decimalRow(title: "Pen volume", unit: "mL", value: $penVolumeML, field: .volume)
+                tenthsRow(title: "Pen volume", unit: "mL",
+                          tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
                 Divider().padding(.leading, 16)
-                decimalRow(title: "Concentration", unit: "mg/mL", value: $concentrationMgPerML, field: .concentration)
+                tenthsRow(title: "Concentration", unit: "mg/mL",
+                          tenths: $concentrationTenths, range: Self.concentrationRange, field: .concentration)
                 Divider().padding(.leading, 16)
-                decimalRow(title: "Prescribed dose", unit: "mg", value: $doseMgInput, field: .dose)
+                tenthsRow(title: "Prescribed dose", unit: "mg",
+                          tenths: $doseTenths, range: Self.doseRange, field: .dose)
                 Divider().padding(.leading, 16)
                 HStack {
                     Text("Units per mL").font(DL.Text.body17).foregroundStyle(DL.text)
@@ -156,25 +174,79 @@ struct PenCalculatorSheet: View {
     // MARK: - Row builders
 
     @ViewBuilder
-    private func decimalRow(title: String, unit: String, value: Binding<Double>, field: Field) -> some View {
-        HStack(spacing: 8) {
+    private func tenthsRow(
+        title: String,
+        unit: String,
+        tenths: Binding<Int>,
+        range: ClosedRange<Int>,
+        field: Field
+    ) -> some View {
+        HStack(spacing: 10) {
             Text(title).font(DL.Text.body17).foregroundStyle(DL.text)
-            Spacer()
-            TextField("", value: value, format: .number.precision(.fractionLength(0...3)))
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
+            Spacer(minLength: 8)
+            stepButton(symbol: "minus") {
+                tenths.wrappedValue = max(range.lowerBound, tenths.wrappedValue - 5)
+            }
+            TextField("", text: tenthsTextBinding(for: tenths, range: range))
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.center)
                 .font(DL.Numerals.row17)
                 .foregroundStyle(DL.text)
-                .frame(minWidth: 60)
+                .frame(minWidth: 64)
                 .focused($focused, equals: field)
+            stepButton(symbol: "plus") {
+                tenths.wrappedValue = min(range.upperBound, tenths.wrappedValue + 5)
+            }
             Text(unit)
                 .font(DL.Text.subhead15)
                 .foregroundStyle(DL.text2)
+                .frame(minWidth: 44, alignment: .leading)
         }
         .padding(.horizontal, 16)
         .frame(minHeight: 54)
         .contentShape(Rectangle())
         .onTapGesture { focused = field }
+    }
+
+    @ViewBuilder
+    private func stepButton(symbol: String, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptic.tap(.light)
+            action()
+        } label: {
+            Image(systemName: symbol)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(DL.text2)
+                .frame(width: 32, height: 32)
+                .background(DL.fill, in: Circle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// Two-way binding: the user types digits, the display shows them
+    /// formatted with the locale's decimal separator one place from the
+    /// right ("25" → "2,5", "5" → "0,5", "150" → "15,0"). Non-digit input
+    /// is stripped silently so the number pad stays the only thing needed.
+    private func tenthsTextBinding(for binding: Binding<Int>, range: ClosedRange<Int>) -> Binding<String> {
+        Binding(
+            get: { formatTenths(binding.wrappedValue) },
+            set: { newValue in
+                let digits = newValue.filter(\.isNumber)
+                // Trim leading zeros and cap the digit count to the range's
+                // upper bound width so the field can't blow past 99,9 etc.
+                let maxDigits = String(range.upperBound).count
+                let capped = String(digits.prefix(maxDigits))
+                let parsed = Int(capped) ?? 0
+                binding.wrappedValue = min(range.upperBound, max(0, parsed))
+            }
+        )
+    }
+
+    private func formatTenths(_ tenths: Int) -> String {
+        let value = max(0, tenths)
+        let intPart = value / 10
+        let fracPart = value % 10
+        return "\(intPart)\(decimalSeparator)\(fracPart)"
     }
 
     @ViewBuilder
