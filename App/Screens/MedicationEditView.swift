@@ -115,9 +115,11 @@ struct MedicationEditView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 16).padding(.vertical, 10)
                             Divider().padding(.leading, 16)
-                            SegmentedTwo(selection: medicationType, options: [
-                                (.scheduled, "Scheduled"), (.asNeeded, "As needed")
-                            ])
+                            Picker("", selection: medicationType) {
+                                Text("Scheduled").tag(MedicationType.scheduled)
+                                Text("As needed").tag(MedicationType.asNeeded)
+                            }
+                            .pickerStyle(.segmented)
                             .padding(.horizontal, 16).padding(.vertical, 10)
                         }
                     }
@@ -132,9 +134,11 @@ struct MedicationEditView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal, 16).padding(.vertical, 10)
                                 Divider().padding(.leading, 16)
-                                SegmentedTwo(selection: $trackingMode, options: [
-                                    (.automatic, "Automatic"), (.manual, "Manual")
-                                ])
+                                Picker("", selection: $trackingMode) {
+                                    Text("Automatic").tag(TrackingMode.automatic)
+                                    Text("Manual").tag(TrackingMode.manual)
+                                }
+                                .pickerStyle(.segmented)
                                 .padding(.horizontal, 16).padding(.vertical, 10)
                             }
                         }
