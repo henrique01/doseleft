@@ -23,11 +23,18 @@ struct MedicationEditView: View {
     @State private var startDate: Date = .now
     @State private var editingScheduleID: UUID?
     @State private var confirmDelete = false
+    // Click-pen state. clicksPerDose == 0 means "not a pen" — when the user
+    // picks the .clickPen icon the calculator sheet fills these in.
+    @State private var clicksPerDose: Int = 0
+    @State private var doseMg: Double = 0
+    @State private var showingPenCalc: Bool = false
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty
             && totalDoses > 0
             && (isAsNeeded || !schedules.isEmpty)
+            // Pen icon requires the calculator to have set clicksPerDose.
+            && (icon != .clickPen || clicksPerDose > 0)
     }
 
     private enum MedicationType: Hashable { case scheduled, asNeeded }
@@ -56,16 +63,35 @@ struct MedicationEditView: View {
                             .padding(.horizontal, 16)
                             .frame(minHeight: 44)
                     }
-                    section("Total doses in container") {
-                        HStack {
-                            Text(icon.defaultUnitLabel.capitalized + "s")
-                                .font(DL.Text.subhead15)
-                                .foregroundStyle(DL.text2)
-                            Spacer()
-                            PillStepper(value: $totalDoses, range: 1...9999, size: .large, editable: true)
+                    if icon == .clickPen {
+                        section("Pen") {
+                            penCalculatorRow
                         }
-                        .padding(.horizontal, 16)
-                        .frame(minHeight: 60)
+                        section("Doses in pen") {
+                            HStack {
+                                Text("Doses")
+                                    .font(DL.Text.subhead15)
+                                    .foregroundStyle(DL.text2)
+                                Spacer()
+                                Text(totalDoses > 0 ? "\(totalDoses)" : "—")
+                                    .font(DL.Numerals.row17)
+                                    .foregroundStyle(DL.text)
+                            }
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 60)
+                        }
+                    } else {
+                        section("Total doses in container") {
+                            HStack {
+                                Text(icon.defaultUnitLabel.capitalized + "s")
+                                    .font(DL.Text.subhead15)
+                                    .foregroundStyle(DL.text2)
+                                Spacer()
+                                PillStepper(value: $totalDoses, range: 1...9999, size: .large, editable: true)
+                            }
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 60)
+                        }
                     }
                     section("Start date") {
                         DatePicker(
@@ -221,6 +247,24 @@ struct MedicationEditView: View {
         }
         .tint(accent.color)
         .onAppear(perform: hydrate)
+        .onChange(of: icon) { _, newValue in
+            // Leaving the pen icon clears pen-specific config; entering it
+            // resets totalDoses so the calculator owns that value.
+            if newValue != .clickPen {
+                clicksPerDose = 0
+                doseMg = 0
+            } else if clicksPerDose == 0 {
+                totalDoses = 0
+            }
+        }
+        .sheet(isPresented: $showingPenCalc) {
+            PenCalculatorSheet(
+                accent: accent.color,
+                totalDoses: $totalDoses,
+                clicksPerDose: $clicksPerDose,
+                doseMg: $doseMg
+            )
+        }
         .confirmationDialog(
             "Delete \(name)?",
             isPresented: $confirmDelete,
@@ -233,6 +277,48 @@ struct MedicationEditView: View {
         } message: {
             Text("This removes the medication, its schedule, and all logged doses. This cannot be undone.")
         }
+    }
+
+    private var penCalculatorRow: some View {
+        Button {
+            Haptic.tap(.light)
+            showingPenCalc = true
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    if clicksPerDose > 0 {
+                        Text("\(formatDoseMg(doseMg)) mg · \(clicksPerDose) clicks per dose")
+                            .font(DL.Text.body17)
+                            .foregroundStyle(DL.text)
+                        Text("Tap to recalculate")
+                            .font(DL.Text.footnote13)
+                            .foregroundStyle(DL.text2)
+                    } else {
+                        Text("Set up your pen")
+                            .font(DL.Text.body17)
+                            .foregroundStyle(DL.text)
+                        Text("Calculate clicks from dose and concentration")
+                            .font(DL.Text.footnote13)
+                            .foregroundStyle(DL.text2)
+                    }
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(DL.text3)
+            }
+            .padding(.horizontal, 16)
+            .frame(minHeight: 60)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func formatDoseMg(_ value: Double) -> String {
+        let f = NumberFormatter()
+        f.minimumFractionDigits = 0
+        f.maximumFractionDigits = 2
+        return f.string(from: NSNumber(value: value)) ?? String(format: "%.2f", value)
     }
 
     private var deleteMedicationButton: some View {
@@ -338,10 +424,15 @@ struct MedicationEditView: View {
 
     @ViewBuilder
     private func scheduleRow(_ s: ScheduleDraft, at idx: Int) -> some View {
+        // For click pens the schedule row reads in clicks rather than "shots":
+        // "· 12 clicks · Every day" instead of "· 1 click · Every day".
+        let displayCount = (icon == .clickPen && clicksPerDose > 0)
+            ? s.count * clicksPerDose
+            : s.count
         Button { editingScheduleID = s.id } label: {
             HStack(spacing: 12) {
                 Text(s.timeText).font(DL.Numerals.row17).foregroundStyle(DL.text)
-                Text("· \(s.count) \(s.unitLabel(for: icon)) · \(s.weekdayText)")
+                Text("· \(displayCount) \(s.unitLabel(for: icon, count: displayCount)) · \(s.weekdayText)")
                     .font(DL.Text.footnote13)
                     .foregroundStyle(DL.text2)
                     .lineLimit(1)
@@ -467,6 +558,8 @@ struct MedicationEditView: View {
         refillNowEnabled = existing.refillNowNotificationEnabled
         schedules = existing.schedulesArray.map { ScheduleDraft(from: $0) }
         if schedules.isEmpty { schedules = [.defaultEvening()] }
+        clicksPerDose = existing.clicksPerDose
+        doseMg = existing.doseMg
     }
 
     private func save() {
@@ -485,6 +578,8 @@ struct MedicationEditView: View {
             existing.doseTimeRemindersEnabled = doseTimeRemindersEnabled && !isAsNeeded
             existing.runningLowNotificationEnabled = runningLowEnabled
             existing.refillNowNotificationEnabled = refillNowEnabled
+            existing.clicksPerDose = icon == .clickPen ? clicksPerDose : 0
+            existing.doseMg = icon == .clickPen ? doseMg : 0
             // Replace schedules. Rescue meds keep an empty schedule set.
             for old in existing.schedulesArray { context.delete(old) }
             existing.schedules = isAsNeeded ? [] : schedules.map { $0.toModel(medication: existing) }
@@ -502,7 +597,9 @@ struct MedicationEditView: View {
                 reminderLeadDoses: reminderLeadDoses,
                 doseTimeRemindersEnabled: doseTimeRemindersEnabled && !isAsNeeded,
                 runningLowNotificationEnabled: runningLowEnabled,
-                refillNowNotificationEnabled: refillNowEnabled
+                refillNowNotificationEnabled: refillNowEnabled,
+                clicksPerDose: icon == .clickPen ? clicksPerDose : 0,
+                doseMg: icon == .clickPen ? doseMg : 0
             )
             context.insert(med)
             if !isAsNeeded {
@@ -576,6 +673,13 @@ struct ScheduleDraft: Identifiable, Hashable {
     }
 
     func unitLabel(for icon: MedicationIcon) -> String {
+        unitLabel(for: icon, count: count)
+    }
+
+    /// Variant that pluralises against a caller-supplied count — useful when
+    /// the displayed number differs from the stored `count` (e.g. click pens
+    /// multiply by `clicksPerDose` for the visible label).
+    func unitLabel(for icon: MedicationIcon, count: Int) -> String {
         let base = icon.defaultUnitLabel
         return count == 1 ? base : base + "s"
     }

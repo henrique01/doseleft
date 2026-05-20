@@ -29,6 +29,15 @@ public final class Medication {
     public var refillNowNotificationEnabled: Bool = true
     public var isActive: Bool = true
     public var createdAt: Date = Date()
+    /// Click-pen support. When > 0 this medication is a click-dialed pen
+    /// (compounded tirzepatide / semaglutide style). The number of clicks
+    /// dialed per logged dose; display surfaces multiply schedule counts by
+    /// this value and swap the unit label to "click". Default 0 = not a pen.
+    public var clicksPerDose: Int = 0
+    /// Cosmetic only: the prescribed dose in milligrams. Surfaced on the
+    /// detail screen as "Dose · X mg (Y clicks)" alongside `clicksPerDose`.
+    /// Default 0 = unset / not displayed.
+    public var doseMg: Double = 0
     /// When non-nil, the medication is paused at that moment. Scheduled dose
     /// consumption freezes at `pausedAt` and notifications stop firing. On
     /// resume, `startDate` is shifted forward by the paused duration so the
@@ -57,7 +66,9 @@ public final class Medication {
         refillNowNotificationEnabled: Bool = true,
         isActive: Bool = true,
         createdAt: Date = .now,
-        pausedAt: Date? = nil
+        pausedAt: Date? = nil,
+        clicksPerDose: Int = 0,
+        doseMg: Double = 0
     ) {
         self.id = id
         self.name = name
@@ -78,9 +89,14 @@ public final class Medication {
         self.isActive = isActive
         self.createdAt = createdAt
         self.pausedAt = pausedAt
+        self.clicksPerDose = clicksPerDose
+        self.doseMg = doseMg
     }
 
     public var isPaused: Bool { pausedAt != nil }
+
+    /// True when this medication is configured as a click-dialed pen.
+    public var isClickPen: Bool { clicksPerDose > 0 }
 
     /// Pause at `now`. Subsequent dose math clamps at `pausedAt`. Idempotent —
     /// re-pausing while already paused is a no-op.

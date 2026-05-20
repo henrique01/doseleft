@@ -59,7 +59,7 @@ struct MedRow: View {
                 Text("\(dosesRemaining)")
                     .font(DL.Numerals.title28)
                     .foregroundStyle(DL.text)
-                Text("\(unitLabel(for: dosesRemaining)) left")
+                Text("\(doseLabel(for: dosesRemaining)) left")
                     .font(DL.Text.caption11)
                     .foregroundStyle(DL.text2)
             }
@@ -71,18 +71,33 @@ struct MedRow: View {
                 Text("days left")
                     .font(DL.Text.caption11)
                     .foregroundStyle(DL.text2)
-                Text("\(dosesRemaining) \(unitLabel(for: dosesRemaining))")
+                Text("\(dosesRemaining) \(doseLabel(for: dosesRemaining))")
                     .font(DL.Text.caption11)
                     .foregroundStyle(DL.text2)
             }
         }
     }
 
+    /// Label for a count of full doses (e.g. dosesRemaining). Click pens
+    /// always show "dose"/"doses" here — the click count belongs on the
+    /// schedule subtitle, not on the remaining-doses stat.
+    private func doseLabel(for count: Int) -> String {
+        if med.isClickPen { return count == 1 ? "dose" : "doses" }
+        return unitLabel(for: count)
+    }
+
     private var subtitleText: String {
         if med.isPaused { return "Schedule paused" }
         guard let next = nextDose else { return "No upcoming doses" }
         let formatter = Date.FormatStyle.dateTime.hour().minute()
-        return "Next dose \(next.date.formatted(formatter)) · \(next.count) \(unitLabel(for: next.count))"
+        let displayCount = displayCount(forScheduleCount: next.count)
+        return "Next dose \(next.date.formatted(formatter)) · \(displayCount) \(unitLabel(for: displayCount))"
+    }
+
+    /// Click pens display scheduled-dose counts in clicks (count × clicksPerDose),
+    /// matching how the user actually dials them. Other meds use the raw count.
+    private func displayCount(forScheduleCount count: Int) -> Int {
+        med.isClickPen ? count * med.clicksPerDose : count
     }
 
     private func unitLabel(for count: Int) -> String {
@@ -93,15 +108,16 @@ struct MedRow: View {
     private var accessibilityLabel: String {
         var parts: [String] = [med.name]
         if med.isAsNeeded {
-            parts.append("\(dosesRemaining) \(unitLabel(for: dosesRemaining)) left")
+            parts.append("\(dosesRemaining) \(doseLabel(for: dosesRemaining)) left")
         } else {
             parts.append("\(daysLeft) days left")
-            parts.append("\(dosesRemaining) \(unitLabel(for: dosesRemaining))")
+            parts.append("\(dosesRemaining) \(doseLabel(for: dosesRemaining))")
         }
         if med.isPaused { parts.append("paused") }
         else if isLow { parts.append("running low") }
         if let next = nextDose {
-            parts.append("next dose \(next.date.formatted(.dateTime.hour().minute())), \(next.count) \(unitLabel(for: next.count))")
+            let displayCount = displayCount(forScheduleCount: next.count)
+            parts.append("next dose \(next.date.formatted(.dateTime.hour().minute())), \(displayCount) \(unitLabel(for: displayCount))")
         }
         return parts.joined(separator: ", ")
     }

@@ -9,6 +9,7 @@ struct MedicationDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showEdit = false
     @State private var showHistory = false
+    @State private var editingLog: DoseLog?
 
     private var accent: Color { DLAccent.from(hex: med.colorHex).color }
     private var remaining: Int { DoseMath.dosesRemaining(med: med, at: .now) }
@@ -43,6 +44,11 @@ struct MedicationDetailView: View {
         }
         .sheet(isPresented: $showEdit) { MedicationEditView(existing: med) }
         .sheet(isPresented: $showHistory) { HistoryView(med: med) }
+        .sheet(item: $editingLog) { log in
+            EditLogDateSheet(log: log, accent: accent) { newDate in
+                DoseLogActions.updateTimestamp(log, to: newDate, for: med, in: context)
+            }
+        }
     }
 
     // MARK: - Sections
@@ -159,11 +165,18 @@ struct MedicationDetailView: View {
     }
 
     private func scheduleRow(_ schedule: DoseSchedule) -> some View {
-        HStack(spacing: 12) {
+        // Click pens render the count in clicks (count × clicksPerDose), and
+        // use the icon's "click" unit; non-pens use the regular unit label.
+        let isPen = med.isClickPen
+        let displayCount = isPen ? schedule.doseCount * med.clicksPerDose : schedule.doseCount
+        let unit = isPen
+            ? (displayCount == 1 ? "click" : "clicks")
+            : unitLabel(for: displayCount)
+        return HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
                     Text(timeString(schedule)).font(DL.Numerals.row17).foregroundStyle(DL.text)
-                    Text("· \(schedule.doseCount) \(unitLabel(for: schedule.doseCount))")
+                    Text("· \(displayCount) \(unit)")
                         .font(DL.Text.body17).foregroundStyle(DL.text2)
                 }
                 Text(weekdayText(schedule))
@@ -203,6 +216,11 @@ struct MedicationDetailView: View {
                             accent: accent
                         )
                         .contextMenu {
+                            if log.source == .reset {
+                                Button { editingLog = log } label: {
+                                    Label("Edit date", systemImage: "calendar")
+                                }
+                            }
                             Button(role: .destructive) {
                                 DoseLogActions.erase(log, for: med, in: context)
                             } label: {
@@ -231,6 +249,15 @@ struct MedicationDetailView: View {
                 infoRow("Started", value: startedDisplay.formatted(date: .abbreviated, time: .omitted))
                 Divider().padding(.leading, 16)
                 infoRow("Total doses", value: "\(med.totalDoses)", valueRounded: true)
+                if med.isClickPen {
+                    Divider().padding(.leading, 16)
+                    infoRow("Dose",
+                            value: "\(formatPenMg(med.doseMg)) mg (\(med.clicksPerDose) clicks)",
+                            valueRounded: true)
+                    Divider().padding(.leading, 16)
+                    let perClick = med.clicksPerDose > 0 ? med.doseMg / Double(med.clicksPerDose) : 0
+                    infoRow("Per click", value: "\(formatPenMg(perClick)) mg", valueRounded: true)
+                }
                 Divider().padding(.leading, 16)
                 Button(action: startNewContainer) {
                     HStack {
@@ -303,7 +330,19 @@ struct MedicationDetailView: View {
         return date.formatted(.dateTime.hour().minute())
     }
 
+    private func formatPenMg(_ value: Double) -> String {
+        let f = NumberFormatter()
+        f.minimumFractionDigits = 0
+        f.maximumFractionDigits = 3
+        return f.string(from: NSNumber(value: value)) ?? String(format: "%.3f", value)
+    }
+
     private func unitLabel(for count: Int) -> String {
+        // For click pens, integer counts in the detail view refer to doses,
+        // not clicks (clicks are derived for schedule rows specifically).
+        // Show "dose"/"doses" so the running-low banner and hero ring stay
+        // legible — schedule rows already do their own click conversion.
+        if med.isClickPen { return count == 1 ? "dose" : "doses" }
         let base = MedicationIcon(rawValue: med.iconSymbol)?.defaultUnitLabel ?? "dose"
         return count == 1 ? base : base + "s"
     }
