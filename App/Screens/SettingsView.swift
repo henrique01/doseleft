@@ -22,7 +22,7 @@ struct SettingsView: View {
                                     .font(DL.Text.footnote13).foregroundStyle(DL.text2)
                             }
                             Spacer()
-                            Toggle("", isOn: $timeSensitive).labelsHidden().tint(DLAccent.sage.color)
+                            Toggle("", isOn: $timeSensitive).labelsHidden().tint(DLAccent.lavender.color)
                         }
                         Divider().padding(.leading, 16)
                         row {
@@ -32,7 +32,7 @@ struct SettingsView: View {
                                     .font(DL.Text.footnote13).foregroundStyle(DL.text2)
                             }
                             Spacer()
-                            Toggle("", isOn: $soundEnabled).labelsHidden().tint(DLAccent.sage.color)
+                            Toggle("", isOn: $soundEnabled).labelsHidden().tint(DLAccent.lavender.color)
                         }
                     }
                     section("Appearance") {
@@ -62,7 +62,7 @@ struct SettingsView: View {
                             }
                             Spacer()
                             Toggle("", isOn: $iCloudSyncEnabled)
-                                .labelsHidden().tint(DLAccent.sage.color)
+                                .labelsHidden().tint(DLAccent.lavender.color)
                                 .onChange(of: iCloudSyncEnabled) { _, _ in pendingSyncChange = true }
                         }
                         if pendingSyncChange {
