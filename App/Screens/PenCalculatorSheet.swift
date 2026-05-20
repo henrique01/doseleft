@@ -1,12 +1,14 @@
 import SwiftUI
 import DoseCore
 
-/// Click-pen calculator. Mirrors the math of the glapp.io "Mounjaro clicks"
-/// tool: given pen volume, concentration, prescribed dose and the pen's
-/// units-per-mL scale, derive clicks-per-dose and doses-per-pen. On Apply
-/// the parent form receives `totalDoses`, `clicksPerDose`, and `doseMg`
-/// so the rest of DoseLeft (schedules, notifications, math) treats the pen
-/// like any other medication counted in integer doses.
+/// Calculator for refillable click-dial pens used with compounded GLP-1
+/// medications (tirzepatide, semaglutide, etc.). NOT for branded Mounjaro
+/// single-dose pens — those have no dial. Given vial volume, concentration,
+/// prescribed dose and the pen's units-per-mL scale, derives clicks-per-dose
+/// and doses-per-pen. On Apply the parent form receives `totalDoses`,
+/// `clicksPerDose`, and `doseMg` so the rest of DoseLeft (schedules,
+/// notifications, math) treats the pen like any other medication counted
+/// in integer doses.
 struct PenCalculatorSheet: View {
     @Environment(\.dismiss) private var dismiss
 
@@ -22,14 +24,19 @@ struct PenCalculatorSheet: View {
     // button adjusts by 5 tenths (= 0.5). Ranges keep results sensible.
     @State private var penVolumeTenths: Int            // 1...999  (0.1–99.9 mL)
     @State private var concentrationTenths: Int        // 1...9999 (0.1–999.9 mg/mL)
+    @State private var totalMgTenths: Int              // 1...99999 (0.1–9999.9 mg per vial)
     @State private var doseTenths: Int                 // 1...999  (0.1–99.9 mg)
     @State private var unitsPerML: Int
+    @State private var entryMode: ConcentrationEntryMode = .concentration
+    @State private var showAdvanced: Bool = false
 
     @FocusState private var focused: Field?
-    private enum Field: Hashable { case volume, concentration, dose }
+    private enum Field: Hashable { case volume, concentration, totalMg, dose }
+    private enum ConcentrationEntryMode: Hashable { case concentration, totalMg }
 
     private static let volumeRange = 1...999
     private static let concentrationRange = 1...9999
+    private static let totalMgRange = 1...99999
     private static let doseRange = 1...999
 
     init(
@@ -53,6 +60,10 @@ struct PenCalculatorSheet: View {
             return max(1, Int((mgPerML * 10).rounded()))
         }()
         self._concentrationTenths = State(initialValue: seededConcentration)
+        // Total mg in vial seeded from concentration × 3 mL default — keeps the
+        // pair consistent when the user opens the sheet and flips to Total mg.
+        let seededTotal = max(1, Int((Double(seededConcentration) / 10.0 * 3.0 * 10).rounded()))
+        self._totalMgTenths = State(initialValue: min(99999, seededTotal))
         self._doseTenths = State(
             initialValue: initialDose > 0 ? max(1, Int((initialDose * 10).rounded())) : 50
         )
@@ -62,7 +73,17 @@ struct PenCalculatorSheet: View {
     // MARK: - Derived
 
     private var penVolumeML: Double { Double(penVolumeTenths) / 10.0 }
-    private var concentrationMgPerML: Double { Double(concentrationTenths) / 10.0 }
+    private var totalMgInVial: Double { Double(totalMgTenths) / 10.0 }
+    /// Concentration is the source of truth for all downstream math. In
+    /// `.concentration` mode it's stored directly; in `.totalMg` mode it's
+    /// derived from `totalMg / volume`. Whichever field is *not* the source
+    /// is shown as a derived footnote next to the active input.
+    private var concentrationMgPerML: Double {
+        switch entryMode {
+        case .concentration: return Double(concentrationTenths) / 10.0
+        case .totalMg:       return penVolumeML > 0 ? totalMgInVial / penVolumeML : 0
+        }
+    }
     private var doseMgInput: Double { Double(doseTenths) / 10.0 }
 
     private var totalClicks: Int {
@@ -85,6 +106,22 @@ struct PenCalculatorSheet: View {
         derivedClicksPerDose > 0 && dosesPerPen > 0 && doseMgInput > 0 && concentrationMgPerML > 0
     }
 
+    /// The dose actually delivered when `derivedClicksPerDose` integer clicks
+    /// are dialed — usually slightly off from `doseMgInput` due to rounding.
+    private var actualDeliveredMg: Double {
+        guard unitsPerML > 0 else { return 0 }
+        return Double(derivedClicksPerDose) * concentrationMgPerML / Double(unitsPerML)
+    }
+    /// Signed drift in percent (positive = over-dose, negative = under-dose).
+    private var roundingDriftPercent: Double {
+        guard doseMgInput > 0 else { return 0 }
+        return (actualDeliveredMg - doseMgInput) / doseMgInput * 100
+    }
+    /// Show the safety banner when rounding shifts the actual dose by ≥1%.
+    private var showsRoundingWarning: Bool {
+        canApply && abs(roundingDriftPercent) >= 1.0
+    }
+
     private var decimalSeparator: String { Locale.current.decimalSeparator ?? "." }
 
     var body: some View {
@@ -94,6 +131,11 @@ struct PenCalculatorSheet: View {
                     helpText
                     inputsSection
                     outputsSection
+                    if showsRoundingWarning {
+                        roundingWarningBanner
+                            .padding(.horizontal, 16)
+                            .padding(.top, 16)
+                    }
                     Spacer(minLength: 32)
                 }
             }
@@ -121,12 +163,26 @@ struct PenCalculatorSheet: View {
             }
         }
         .tint(accent)
+        .onChange(of: entryMode) { _, newMode in
+            // Seed the now-inactive field from the just-computed concentration
+            // so the displayed numbers stay continuous across mode switches.
+            switch newMode {
+            case .totalMg:
+                let mg = concentrationMgPerML * penVolumeML
+                totalMgTenths = min(Self.totalMgRange.upperBound,
+                                    max(Self.totalMgRange.lowerBound, Int((mg * 10).rounded())))
+            case .concentration:
+                concentrationTenths = min(Self.concentrationRange.upperBound,
+                                          max(Self.concentrationRange.lowerBound,
+                                              Int((concentrationMgPerML * 10).rounded())))
+            }
+        }
     }
 
     // MARK: - Sections
 
     private var helpText: some View {
-        Text("Enter your pen's volume, concentration, and the dose your prescriber set. We'll calculate the clicks to dial each time.")
+        Text("For refillable click-dial pens used with compounded tirzepatide, semaglutide, or similar. Enter the vial's volume, concentration, and your prescribed dose.")
             .font(DL.Text.footnote13)
             .foregroundStyle(DL.text2)
             .padding(.horizontal, 20)
@@ -136,24 +192,98 @@ struct PenCalculatorSheet: View {
 
     private var inputsSection: some View {
         // Grid keeps the label / − / value / + / unit columns aligned across
-        // every row, including the integer "Units per mL" row. Without it
-        // each HStack picks its own spacing and the +/− buttons land at
-        // different x positions per row.
+        // every row. The mode segmented control sits above the grid; the
+        // Units-per-mL row hides behind an "Advanced" disclosure since the
+        // value is almost always 100 for U-100 insulin-style pens.
         section("Pen") {
-            Grid(alignment: .center, horizontalSpacing: 10, verticalSpacing: 0) {
-                tenthsGridRow(title: "Pen volume", unit: "mL",
-                              tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
-                gridDivider
-                tenthsGridRow(title: "Concentration", unit: "mg/mL",
-                              tenths: $concentrationTenths, range: Self.concentrationRange, field: .concentration)
-                gridDivider
-                tenthsGridRow(title: "Dose", unit: "mg",
-                              tenths: $doseTenths, range: Self.doseRange, field: .dose)
-                gridDivider
-                intGridRow(title: "Units per mL", value: $unitsPerML, range: 10...500)
+            VStack(spacing: 0) {
+                entryModeToggle
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+                    .padding(.bottom, 8)
+                Grid(alignment: .center, horizontalSpacing: 10, verticalSpacing: 0) {
+                    tenthsGridRow(title: "Pen volume", unit: "mL",
+                                  tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
+                    gridDivider
+                    if entryMode == .concentration {
+                        tenthsGridRow(title: "Concentration", unit: "mg/mL",
+                                      tenths: $concentrationTenths,
+                                      range: Self.concentrationRange,
+                                      field: .concentration)
+                    } else {
+                        tenthsGridRow(title: "Vial total", unit: "mg",
+                                      tenths: $totalMgTenths,
+                                      range: Self.totalMgRange,
+                                      field: .totalMg)
+                    }
+                    gridDivider
+                    tenthsGridRow(title: "Dose", unit: "mg",
+                                  tenths: $doseTenths, range: Self.doseRange, field: .dose)
+                    if showAdvanced {
+                        gridDivider
+                        intGridRow(title: "Units per mL", value: $unitsPerML, range: 10...500)
+                    }
+                }
+                .padding(.horizontal, 16)
+                derivedFootnote
+                advancedDisclosureRow
+            }
+        }
+    }
+
+    private var entryModeToggle: some View {
+        SegmentedTwo(selection: $entryMode, options: [
+            (.concentration, "mg/mL"),
+            (.totalMg, "Total mg"),
+        ])
+    }
+
+    /// Small derived-value line under the active concentration/total-mg row,
+    /// showing whichever quantity isn't currently being edited.
+    @ViewBuilder
+    private var derivedFootnote: some View {
+        HStack {
+            Group {
+                switch entryMode {
+                case .concentration:
+                    Text("= \(formatMg(concentrationMgPerML * penVolumeML)) mg in \(formatMg(penVolumeML)) mL vial")
+                case .totalMg:
+                    Text("= \(formatMg(concentrationMgPerML)) mg/mL")
+                }
+            }
+            .font(DL.Text.footnote13)
+            .foregroundStyle(DL.text2)
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 6)
+        .padding(.bottom, 2)
+    }
+
+    /// Tappable footer toggling the Units-per-mL row. When collapsed we still
+    /// surface the current pen scale so the value isn't completely invisible.
+    private var advancedDisclosureRow: some View {
+        Button {
+            Haptic.tap(.light)
+            withAnimation(.easeInOut(duration: 0.2)) { showAdvanced.toggle() }
+        } label: {
+            HStack(spacing: 6) {
+                Text(showAdvanced
+                     ? "Hide advanced"
+                     : "Advanced · pen scale \(unitsPerML) units/mL")
+                    .font(DL.Text.footnote13)
+                    .foregroundStyle(accent)
+                Image(systemName: showAdvanced ? "chevron.up" : "chevron.down")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(accent)
+                Spacer()
             }
             .padding(.horizontal, 16)
+            .padding(.top, 10)
+            .padding(.bottom, 12)
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
     }
 
     /// Five-column divider spanning the whole row (label, −, value, +, unit).
@@ -164,6 +294,33 @@ struct PenCalculatorSheet: View {
                 .gridCellColumns(5)
                 .gridCellUnsizedAxes(.horizontal)
         }
+    }
+
+    private var roundingWarningBanner: some View {
+        let drift = roundingDriftPercent
+        let direction = drift >= 0 ? "above" : "below"
+        let percent = String(format: "%.1f%%", abs(drift))
+        return HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(accent.dlSaturated())
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Dose is rounded")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(accent.dlSaturated())
+                Text("Dialing \(derivedClicksPerDose) clicks delivers \(formatMg(actualDeliveredMg)) mg — \(percent) \(direction) the prescribed \(formatMg(doseMgInput)) mg. Confirm with your prescriber.")
+                    .font(DL.Text.footnote13)
+                    .foregroundStyle(DL.text2)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 11)
+        .background(accent.opacity(0.10), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(accent.opacity(0.4), lineWidth: 0.5)
+        )
     }
 
     private var outputsSection: some View {
