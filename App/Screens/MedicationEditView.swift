@@ -692,3 +692,36 @@ struct ScheduleDraft: Identifiable, Hashable {
 private struct ScheduleEditTarget: Identifiable {
     let id: UUID
 }
+
+#if DEBUG
+private struct MedicationEditPreviewHost: View {
+    let existing: Medication?
+    let container: ModelContainer
+    init(existing build: (() -> Medication)? = nil) {
+        let c = ModelContainer.doseLeftShared(inMemory: true)
+        if let build {
+            let ctx = ModelContext(c)
+            let m = build()
+            ctx.insert(m)
+            m.schedules?.forEach { ctx.insert($0) }
+            try? ctx.save()
+            self.existing = m
+        } else {
+            self.existing = nil
+        }
+        self.container = c
+    }
+    var body: some View {
+        MedicationEditView(existing: existing)
+            .modelContainer(container)
+    }
+}
+
+#Preview("New") {
+    MedicationEditPreviewHost()
+}
+
+#Preview("Edit existing") {
+    MedicationEditPreviewHost { PreviewFixtures.scheduledMed() }
+}
+#endif

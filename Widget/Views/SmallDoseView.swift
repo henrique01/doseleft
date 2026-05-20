@@ -60,3 +60,12 @@ struct SmallDoseView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview(as: .systemSmall) {
+    DoseWidget()
+} timeline: {
+    DoseEntry(date: .now, meds: [DoseTimelineProvider.placeholderSnapshot])
+    DoseEntry(date: .now, meds: [])
+}
+#endif

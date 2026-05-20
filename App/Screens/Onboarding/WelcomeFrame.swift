@@ -41,3 +41,10 @@ struct WelcomeFrame: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    WelcomeFrame(advance: {})
+        .background(DL.bg)
+}
+#endif

@@ -507,3 +507,23 @@ struct PenCalculatorSheet: View {
         return f.string(from: NSNumber(value: value)) ?? String(format: "%.3f", value)
     }
 }
+
+#if DEBUG
+private struct PenCalculatorPreviewHost: View {
+    @State private var totalDoses: Int = 0
+    @State private var clicksPerDose: Int = 0
+    @State private var doseMg: Double = 0
+    var body: some View {
+        PenCalculatorSheet(
+            accent: DLAccent.sage.color,
+            totalDoses: $totalDoses,
+            clicksPerDose: $clicksPerDose,
+            doseMg: $doseMg
+        )
+    }
+}
+
+#Preview {
+    PenCalculatorPreviewHost()
+}
+#endif

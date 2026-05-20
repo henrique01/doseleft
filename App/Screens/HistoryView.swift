@@ -143,3 +143,29 @@ struct HistoryView: View {
         }
     }
 }
+
+#if DEBUG
+private struct HistoryPreviewHost: View {
+    let med: Medication
+    let container: ModelContainer
+    init() {
+        let c = ModelContainer.doseLeftShared(inMemory: true)
+        let ctx = ModelContext(c)
+        let m = PreviewFixtures.withLogs(PreviewFixtures.scheduledMed())
+        ctx.insert(m)
+        m.schedules?.forEach { ctx.insert($0) }
+        m.logs?.forEach { ctx.insert($0) }
+        try? ctx.save()
+        self.med = m
+        self.container = c
+    }
+    var body: some View {
+        NavigationStack { HistoryView(med: med) }
+            .modelContainer(container)
+    }
+}
+
+#Preview {
+    HistoryPreviewHost()
+}
+#endif

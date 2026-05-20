@@ -139,3 +139,9 @@ private extension Bundle {
         (object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "1.0.0"
     }
 }
+
+#if DEBUG
+#Preview {
+    SettingsView()
+}
+#endif

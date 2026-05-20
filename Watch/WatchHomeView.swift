@@ -140,3 +140,15 @@ struct WatchHomeView: View {
     }
     #endif
 }
+
+#if DEBUG
+#Preview("Populated") {
+    WatchHomeView()
+        .modelContainer(PreviewFixtures.container())
+}
+
+#Preview("Empty") {
+    WatchHomeView()
+        .modelContainer(PreviewFixtures.emptyContainer())
+}
+#endif

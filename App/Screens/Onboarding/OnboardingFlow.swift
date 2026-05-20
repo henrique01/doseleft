@@ -33,3 +33,9 @@ struct OnboardingFlow: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    OnboardingFlow(onFinish: {})
+}
+#endif

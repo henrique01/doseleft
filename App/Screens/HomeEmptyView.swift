@@ -31,3 +31,10 @@ struct HomeEmptyView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+#if DEBUG
+#Preview {
+    HomeEmptyView(onAdd: {})
+        .background(DL.bg)
+}
+#endif

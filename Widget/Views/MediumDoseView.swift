@@ -76,3 +76,24 @@ struct MediumDoseView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview(as: .systemMedium) {
+    DoseWidget()
+} timeline: {
+    let primary = DoseTimelineProvider.placeholderSnapshot
+    let secondary = DoseSnapshot(
+        id: UUID(), name: "Ventolin", iconSymbol: "lungs.fill",
+        colorHex: DLAccent.terracotta.hex,
+        daysLeft: 30, dosesRemaining: 84, totalDoses: 200,
+        nextDoseTime: nil, nextDoseCount: nil, isLow: false, isAsNeeded: true
+    )
+    let tertiary = DoseSnapshot(
+        id: UUID(), name: "Mounjaro", iconSymbol: "pencil.tip",
+        colorHex: DLAccent.sage.hex,
+        daysLeft: 3, dosesRemaining: 1, totalDoses: 4,
+        nextDoseTime: .now.addingTimeInterval(86_400), nextDoseCount: 1, isLow: true, isAsNeeded: false
+    )
+    DoseEntry(date: .now, meds: [primary, secondary, tertiary])
+}
+#endif

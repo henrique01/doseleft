@@ -87,3 +87,10 @@ struct AppIconBlock: View {
             }
     }
 }
+
+#if DEBUG
+#Preview {
+    NotificationsFrame(finish: {})
+        .background(DL.bg)
+}
+#endif

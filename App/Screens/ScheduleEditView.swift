@@ -148,3 +148,25 @@ struct ScheduleEditView: View {
             .padding(.horizontal, 16)
     }
 }
+
+#if DEBUG
+private struct ScheduleEditPreviewHost: View {
+    @State var draft = ScheduleDraft.defaultEvening()
+    let allowDelete: Bool
+    var body: some View {
+        ScheduleEditView(
+            schedule: $draft,
+            accent: DLAccent.lavender.color,
+            onDelete: allowDelete ? {} : nil
+        )
+    }
+}
+
+#Preview("Single (no delete)") {
+    ScheduleEditPreviewHost(allowDelete: false)
+}
+
+#Preview("Removable") {
+    ScheduleEditPreviewHost(allowDelete: true)
+}
+#endif

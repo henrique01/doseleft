@@ -129,3 +129,15 @@ struct HomeView: View {
         return (n.date, n.schedule.doseCount)
     }
 }
+
+#if DEBUG
+#Preview("Populated") {
+    HomeView()
+        .modelContainer(PreviewFixtures.container())
+}
+
+#Preview("Empty") {
+    HomeView()
+        .modelContainer(PreviewFixtures.emptyContainer())
+}
+#endif

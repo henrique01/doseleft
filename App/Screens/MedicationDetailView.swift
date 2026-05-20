@@ -442,3 +442,39 @@ struct MedicationDetailView: View {
         return resets.max() ?? med.startDate
     }
 }
+
+#if DEBUG
+import SwiftData
+
+private struct MedicationDetailPreviewHost: View {
+    let med: Medication
+    let container: ModelContainer
+    init(_ build: () -> Medication) {
+        let c = ModelContainer.doseLeftShared(inMemory: true)
+        let ctx = ModelContext(c)
+        let m = build()
+        ctx.insert(m)
+        m.schedules?.forEach { ctx.insert($0) }
+        m.logs?.forEach { ctx.insert($0) }
+        try? ctx.save()
+        self.med = m
+        self.container = c
+    }
+    var body: some View {
+        NavigationStack { MedicationDetailView(med: med) }
+            .modelContainer(container)
+    }
+}
+
+#Preview("Scheduled") {
+    MedicationDetailPreviewHost { PreviewFixtures.withLogs(PreviewFixtures.scheduledMed()) }
+}
+
+#Preview("Running low") {
+    MedicationDetailPreviewHost { PreviewFixtures.lowMed() }
+}
+
+#Preview("As-needed") {
+    MedicationDetailPreviewHost { PreviewFixtures.asNeededMed() }
+}
+#endif

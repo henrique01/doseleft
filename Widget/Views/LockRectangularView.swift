@@ -34,3 +34,11 @@ struct LockRectangularView: View {
         return "\(m.daysLeft) days · \(m.dosesRemaining) \(m.unitLabel(count: m.dosesRemaining))"
     }
 }
+
+#if DEBUG
+#Preview(as: .accessoryRectangular) {
+    DoseWidget()
+} timeline: {
+    DoseEntry(date: .now, meds: [DoseTimelineProvider.placeholderSnapshot])
+}
+#endif

@@ -111,3 +111,32 @@ struct WatchLogView: View {
         Task { await NotificationScheduler.shared.rescheduleAll(meds: [med]) }
     }
 }
+
+#if DEBUG
+private struct WatchLogPreviewHost: View {
+    let med: Medication
+    let container: ModelContainer
+    init(_ build: () -> Medication) {
+        let c = ModelContainer.doseLeftShared(inMemory: true)
+        let ctx = ModelContext(c)
+        let m = build()
+        ctx.insert(m)
+        m.schedules?.forEach { ctx.insert($0) }
+        try? ctx.save()
+        self.med = m
+        self.container = c
+    }
+    var body: some View {
+        NavigationStack { WatchLogView(med: med) }
+            .modelContainer(container)
+    }
+}
+
+#Preview("Scheduled") {
+    WatchLogPreviewHost { PreviewFixtures.scheduledMed() }
+}
+
+#Preview("As-needed") {
+    WatchLogPreviewHost { PreviewFixtures.asNeededMed() }
+}
+#endif

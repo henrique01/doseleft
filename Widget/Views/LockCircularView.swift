@@ -24,3 +24,11 @@ struct LockCircularView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview(as: .accessoryCircular) {
+    DoseWidget()
+} timeline: {
+    DoseEntry(date: .now, meds: [DoseTimelineProvider.placeholderSnapshot])
+}
+#endif

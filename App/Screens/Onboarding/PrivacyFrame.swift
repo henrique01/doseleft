@@ -37,3 +37,10 @@ struct PrivacyFrame: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    PrivacyFrame(advance: {})
+        .background(DL.bg)
+}
+#endif
