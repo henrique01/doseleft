@@ -91,6 +91,70 @@ public enum DoseMath {
         return daysRemaining(med: med, at: date, calendar: calendar) <= med.reminderLeadDays
     }
 
+    /// The instant `dosesRemaining` first reached zero for the current
+    /// container. `nil` while there is still stock, or whenever a `.reset` has
+    /// since refilled the container (the prior container's finish is
+    /// superseded). Walks scheduled-dose times + DoseLog entries in
+    /// chronological order so the answer is right whether the user opened the
+    /// app today or weeks after the fact.
+    public static func finishedDate(med: Medication, at now: Date, calendar: Calendar = .current) -> Date? {
+        guard dosesRemaining(med: med, at: now, calendar: calendar) == 0 else { return nil }
+
+        enum EventKind { case consumption, reset }
+        var events: [(when: Date, delta: Int, kind: EventKind)] = []
+
+        let scheduledEnd = med.pausedAt.map { min(now, $0) } ?? now
+        if med.startDate <= scheduledEnd {
+            let schedules = med.schedulesArray
+            DateBucketing.eachDay(from: med.startDate, through: scheduledEnd, calendar: calendar) { day in
+                let weekday = calendar.component(.weekday, from: day)
+                for schedule in schedules where schedule.weekdays.contains(weekday) {
+                    guard let when = DateBucketing.setTime(
+                        hour: schedule.timeHour,
+                        minute: schedule.timeMinute,
+                        on: day,
+                        calendar: calendar
+                    ) else { continue }
+                    if when >= med.startDate && when <= scheduledEnd {
+                        events.append((when, schedule.doseCount, .consumption))
+                    }
+                }
+            }
+        }
+
+        for log in med.logsArray where log.timestamp <= now {
+            let kind: EventKind = (log.source == .reset) ? .reset : .consumption
+            events.append((log.timestamp, log.doseCount, kind))
+        }
+
+        // Process consumption before reset at the same instant so a depletion
+        // at T followed by a refill at T still records the finish.
+        events.sort { a, b in
+            if a.when != b.when { return a.when < b.when }
+            switch (a.kind, b.kind) {
+            case (.consumption, .reset): return true
+            case (.reset, .consumption): return false
+            default: return false
+            }
+        }
+
+        var used = 0
+        var lastFinish: Date? = nil
+        for event in events {
+            switch event.kind {
+            case .reset:
+                used = 0
+                lastFinish = nil
+            case .consumption:
+                used += event.delta
+                if used >= med.totalDoses && lastFinish == nil {
+                    lastFinish = event.when
+                }
+            }
+        }
+        return lastFinish
+    }
+
     /// Next upcoming scheduled dose time strictly after `date`. Returns `nil`
     /// while the medication is paused.
     public static func nextDose(med: Medication, after date: Date, calendar: Calendar = .current) -> (date: Date, schedule: DoseSchedule)? {

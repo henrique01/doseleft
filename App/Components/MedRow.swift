@@ -27,7 +27,9 @@ struct MedRow: View {
                         .font(DL.Text.headline17)
                         .foregroundStyle(DL.text)
                         .lineLimit(1)
-                    if med.isPaused {
+                    if dosesRemaining == 0 {
+                        DoseChip(title: "Empty", accent: accent)
+                    } else if med.isPaused {
                         DoseChip(title: "Paused", accent: accent)
                     } else if isLow {
                         DoseChip(title: "Running low", accent: accent)
@@ -113,7 +115,8 @@ struct MedRow: View {
             parts.append("\(daysLeft) days left")
             parts.append("\(dosesRemaining) \(doseLabel(for: dosesRemaining))")
         }
-        if med.isPaused { parts.append("paused") }
+        if dosesRemaining == 0 { parts.append("empty") }
+        else if med.isPaused { parts.append("paused") }
         else if isLow { parts.append("running low") }
         if let next = nextDose {
             let displayCount = displayCount(forScheduleCount: next.count)

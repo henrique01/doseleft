@@ -15,6 +15,7 @@ struct MedicationDetailView: View {
     private var remaining: Int { DoseMath.dosesRemaining(med: med, at: .now) }
     private var daysLeft: Int { DoseMath.daysRemaining(med: med, at: .now) }
     private var isLow: Bool { !med.isPaused && DoseMath.isRunningLow(med: med, at: .now) }
+    private var finishedAt: Date? { DoseMath.finishedDate(med: med, at: .now) }
     private var fillFraction: Double {
         guard med.totalDoses > 0 else { return 0 }
         return Double(remaining) / Double(med.totalDoses)
@@ -23,7 +24,9 @@ struct MedicationDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                if isLow {
+                if let finishedAt {
+                    finishedBanner(date: finishedAt).padding(.horizontal, 16).padding(.top, 4)
+                } else if isLow {
                     runningLowBanner.padding(.horizontal, 16).padding(.top, 4)
                 }
                 heroRing.padding(.top, 24)
@@ -52,6 +55,27 @@ struct MedicationDetailView: View {
     }
 
     // MARK: - Sections
+
+    private func finishedBanner(date: Date) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(accent.dlSaturated())
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Finished")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(accent.dlSaturated())
+                Text("Finished on \(date.formatted(date: .long, time: .omitted)).")
+                    .font(DL.Text.footnote13)
+                    .foregroundStyle(DL.text2)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 11)
+        .background(accent.opacity(0.10), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(accent.opacity(0.4), lineWidth: 0.5))
+    }
 
     private var runningLowBanner: some View {
         HStack(spacing: 10) {
