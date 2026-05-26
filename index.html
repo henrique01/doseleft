@@ -3,80 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DoseLeft</title>
-<meta name="description" content="DoseLeft tracks how many days remain in every inhaler, drop bottle, and tablet bottle, and reminds you a week before you run out.">
-<style>
-  :root {
-    color-scheme: light dark;
-    --bg: #ffffff;
-    --fg: #1c1c1e;
-    --muted: #6e6e73;
-    --accent: #0a84ff;
-    --border: #e5e5ea;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #000000;
-      --fg: #f2f2f7;
-      --muted: #98989d;
-      --accent: #0a84ff;
-      --border: #1c1c1e;
-    }
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  main {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 64px 24px 96px;
-  }
-  h1 {
-    font-size: 40px;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0 0 16px;
-  }
-  p { margin: 0 0 16px; }
-  .tagline { font-size: 19px; color: var(--muted); margin-bottom: 32px; }
-  .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-  .links a {
-    display: inline-block;
-    padding: 10px 18px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--fg);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .links a:hover { border-color: var(--accent); color: var(--accent); }
-  footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 14px;
-  }
-  a { color: var(--accent); }
-</style>
+<title>DoseLeft — know how many days you have left</title>
+<meta name="description" content="DoseLeft tracks how many days remain in every inhaler, drop bottle, and tablet bottle, and reminds you about a week before you run out. iPhone and Apple Watch.">
+<meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15131A" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<main>
-  <h1>DoseLeft</h1>
-  <p class="tagline">Know how many days you have left of every inhaler, drop bottle, and tablet bottle. DoseLeft reminds you about a week before you run out, on your iPhone and Apple Watch.</p>
-  <p>No accounts. No ads. No tracking. Your data stays on your device, with optional iCloud sync.</p>
-  <div class="links">
+
+<header class="site-header">
+  <a href="index.html" class="wordmark">
+    <span class="mark">D</span>
+    <span>DoseLeft</span>
+  </a>
+  <nav>
     <a href="support.html">Support</a>
-    <a href="privacy.html">Privacy Policy</a>
-  </div>
-  <footer>
-    &copy; 2026 DoseLeft. All rights reserved.
-  </footer>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<main class="wide">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">iPhone &amp; Apple Watch</p>
+      <h1>Know how many days you have&nbsp;left.</h1>
+      <p class="lede">DoseLeft tracks the doses remaining in every inhaler, drop bottle, and tablet bottle — and reminds you about a week before you run out.</p>
+      <div class="links">
+        <a href="support.html" class="primary">Get support</a>
+        <a href="privacy.html">Read the privacy policy</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="phone" role="img" aria-label="DoseLeft Medications screen showing three medications with days remaining">
+        <img src="../screens/01-medications.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <h3>Inhalers, drops, tablets &amp; pens</h3>
+        <p>Track each container by doses, puffs, drops or clicks — DoseLeft does the math.</p>
+      </div>
+    </div>
+    <div class="feature terracotta">
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <h3>Reminders before you run out</h3>
+        <p>A gentle notification about a week ahead, so you have time to refill the prescription.</p>
+      </div>
+    </div>
+    <div class="feature sage">
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <h3>Lock Screen &amp; Home Screen widgets</h3>
+        <p>Days remaining at a glance, without opening the app.</p>
+      </div>
+    </div>
+    <div class="feature slate">
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <h3>On your wrist, too</h3>
+        <p>The Apple Watch app shows your medications and counts down with you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <p><strong>No accounts. No ads. No tracking.</strong> Your data stays on your device, with optional iCloud sync handled entirely by Apple.</p>
+  </section>
 </main>
+
+<footer class="site-footer">
+  <span>© 2026 DoseLeft</span>
+  <span class="spacer"></span>
+  <a href="support.html">Support</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="mailto:doseleft@tankit.app">doseleft@tankit.app</a>
+</footer>
+
 </body>
 </html>
