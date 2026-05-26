@@ -23,7 +23,7 @@ struct PrivacyFrame: View {
                     .font(.system(size: 28, weight: .bold))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(DL.text)
-                Text("Everything you log lives on this iPhone and Apple Watch. No accounts. No tracking. iCloud sync is off by default — turn it on in Settings if you want it.")
+                Text("Everything you log lives on this iPhone and Apple Watch. No accounts. No tracking. iCloud sync is off by default. Turn it on in Settings if you want it.")
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(DL.text2)

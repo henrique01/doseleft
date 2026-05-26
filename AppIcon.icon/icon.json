@@ -40,7 +40,8 @@
           ],
           "glass" : false,
           "image-name" : "DoseLeft-icon-E-track.svg",
-          "name" : "DoseLeft-icon-E-track"
+          "name" : "DoseLeft-icon-E-track",
+          "opacity" : 1
         }
       ],
       "shadow" : {

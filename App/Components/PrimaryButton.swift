@@ -36,3 +36,20 @@ struct SecondaryButton: View {
         .buttonStyle(.plain)
     }
 }
+
+#if DEBUG
+#Preview("Primary") {
+    PrimaryButton(title: "Log dose", accent: DLAccent.lavender.color, action: {})
+        .padding()
+}
+
+#Preview("Primary with icon") {
+    PrimaryButton(title: "Add medication", systemImage: "plus", accent: DLAccent.sage.color, action: {})
+        .padding()
+}
+
+#Preview("Secondary") {
+    SecondaryButton(title: "Cancel", action: {})
+        .padding()
+}
+#endif

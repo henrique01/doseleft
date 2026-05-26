@@ -49,6 +49,7 @@
 		7939C6F18B4EC1260BE98F81 /* MedicationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C540423BEDE82316CB832A9 /* MedicationDetailView.swift */; };
 		7A218A7ADB310E6ADEE056F4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039283FF090EBA0C2691F700 /* SettingsView.swift */; };
 		7B39778D22E1175278FA47A4 /* ScheduleEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970ED73F683508E14F9186F3 /* ScheduleEditView.swift */; };
+		7C0F2C8E467BB7894DD36217 /* FinishedDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9866CB05B0B3552EE8685A6 /* FinishedDateTests.swift */; };
 		8104B02C206B9D21F8355347 /* WelcomeFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6870A7B1CB6CA1C736BA16CB /* WelcomeFrame.swift */; };
 		815C403518CDC4B0915ABFF5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1E3097DC2A8FCE0B29367A68 /* PrivacyInfo.xcprivacy */; };
 		869CB5755B082E1C48FB442B /* MedicationLogPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */; };
@@ -67,6 +68,7 @@
 		C5C6C2AD5EEE65A0F8EF1BC9 /* MedRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC2BFE63E1C8CADDB0CE6366 /* MedRow.swift */; };
 		C627A3B4DB178CAF74D1AFC9 /* DSTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE74D23C2294EA98B4BD3201 /* DSTTests.swift */; };
 		C646647A22222B26DBEC9FD8 /* EditLogDateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A91144B1300B4C6DC74AB48 /* EditLogDateSheet.swift */; };
+		D1825DE05F908801D1C0EE68 /* DoseLeft.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 1AF18891E607FBE698586F1B /* DoseLeft.xcodeproj */; };
 		D22ED602FE856AAD7764EEDC /* LockCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AEB1381BD707866C03F9F9 /* LockCircularView.swift */; };
 		DB5C3C6AFB393DD5C2B60B1B /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7DBEFE90E19EA3AB52A9C /* HistoryView.swift */; };
 		DDC4053C645F5CC900614DFA /* HapticTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014D910294513FE42F32D7E4 /* HapticTap.swift */; };
@@ -130,6 +132,7 @@
 		12885961191DE6E204E30D6C /* LogMissedIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMissedIntent.swift; sourceTree = "<group>"; };
 		1452D7B69267EB731A7CA7D7 /* StartDateEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDateEditTests.swift; sourceTree = "<group>"; };
 		1A4CBD59352532046F549349 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		1AF18891E607FBE698586F1B /* DoseLeft.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = DoseLeft.xcodeproj; sourceTree = "<group>"; };
 		1E3097DC2A8FCE0B29367A68 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1EE2B34C78A06F9D1789533A /* MedicationLogPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationLogPresentation.swift; sourceTree = "<group>"; };
 		1F06103BD64D103777787F81 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 		9C385AB848AC0DEA7587186E /* DoseLeftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseLeftApp.swift; sourceTree = "<group>"; };
 		9F7C5252D134B3D1E32AD815 /* DoseTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseTimelineProvider.swift; sourceTree = "<group>"; };
 		A7EBE64D660A2C11BDED093B /* WatchLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLogView.swift; sourceTree = "<group>"; };
+		A9866CB05B0B3552EE8685A6 /* FinishedDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedDateTests.swift; sourceTree = "<group>"; };
 		AEF8F42C339B454C5450C89F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B4E272A94A74E7D465038CD0 /* AcknowledgmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgmentsView.swift; sourceTree = "<group>"; };
 		BA5879A3D9D0CD7A3C48464B /* DoseWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseWidgetBundle.swift; sourceTree = "<group>"; };
@@ -341,6 +345,7 @@
 				5A9C5637172F932C88B8628B /* Resources */,
 				DBD37EB15C955911CE075EE8 /* Screens */,
 				382DC22341D5C43F186B4BA5 /* Util */,
+				1AF18891E607FBE698586F1B /* DoseLeft.xcodeproj */,
 				9C385AB848AC0DEA7587186E /* DoseLeftApp.swift */,
 			);
 			path = App;
@@ -439,6 +444,7 @@
 			children = (
 				DDA7C50AA83F50E28D493220 /* DoseMathTests.swift */,
 				CE74D23C2294EA98B4BD3201 /* DSTTests.swift */,
+				A9866CB05B0B3552EE8685A6 /* FinishedDateTests.swift */,
 				DCFA700D211D1D2833FF4C2E /* PauseTests.swift */,
 				CAAB50767B41F578B5ED05C9 /* PerformanceTests.swift */,
 				7108715F6BD917FEB7941247 /* ResetTests.swift */,
@@ -604,6 +610,7 @@
 			files = (
 				E73C3E2C5EC3A2DDB3F5D645 /* AppIcon.icon in Resources */,
 				EE19065209CA6C79B77F1921 /* Assets.xcassets in Resources */,
+				D1825DE05F908801D1C0EE68 /* DoseLeft.xcodeproj in Resources */,
 				A46454F11DD24F8BBC3E07F4 /* Localizable.strings in Resources */,
 				815C403518CDC4B0915ABFF5 /* PrivacyInfo.xcprivacy in Resources */,
 			);
@@ -745,6 +752,7 @@
 			files = (
 				C627A3B4DB178CAF74D1AFC9 /* DSTTests.swift in Sources */,
 				1797EB1AE87ED661B4FE57EC /* DoseMathTests.swift in Sources */,
+				7C0F2C8E467BB7894DD36217 /* FinishedDateTests.swift in Sources */,
 				6FB9303ED162F6BBA492C53E /* PauseTests.swift in Sources */,
 				394BA02D938CDDC85A821D24 /* PerformanceTests.swift in Sources */,
 				371B5FEAB02CEABF7AB5733D /* ResetTests.swift in Sources */,
@@ -799,7 +807,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App/Resources/DoseLeft.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/DoseLeft.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Resources/Info.plist;
@@ -819,7 +827,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App/Resources/DoseLeft.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/DoseLeft.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Resources/Info.plist;

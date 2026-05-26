@@ -56,7 +56,7 @@ struct SettingsView: View {
                         row {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("Sync via iCloud").font(DL.Text.body17).foregroundStyle(DL.text)
-                                Text("Mirror your medications to iPad and other iPhones via your private iCloud. Off by default — your data stays on this iPhone and Apple Watch.")
+                                Text("Mirror your medications across your iPhones via your private iCloud. Off by default. Your data stays on this iPhone and Apple Watch.")
                                     .font(DL.Text.footnote13).foregroundStyle(DL.text2)
                                     .fixedSize(horizontal: false, vertical: true)
                             }
@@ -75,7 +75,7 @@ struct SettingsView: View {
                         }
                     }
                     section("Privacy") {
-                        Text("By default, your medication data stays only on this iPhone and your Apple Watch — they talk directly over Bluetooth. Turning on iCloud Sync adds iPad/multi-device support; data is encrypted in transit and at rest. DoseLeft has no servers, no accounts, and no analytics.")
+                        Text("By default, your medication data stays only on this iPhone and your Apple Watch. They talk directly over Bluetooth. Turning on iCloud Sync mirrors your data across your iPhones, encrypted in transit and at rest. DoseLeft has no servers, no accounts, and no analytics.")
                             .font(DL.Text.subhead15)
                             .foregroundStyle(DL.text)
                             .padding(16)

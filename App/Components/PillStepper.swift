@@ -76,3 +76,38 @@ enum PillStepperSize {
         self == .small ? DL.Numerals.stepper22 : DL.Numerals.title28
     }
 }
+
+#if DEBUG
+private struct PillStepperPreview: View {
+    @State private var value: Int
+    let range: ClosedRange<Int>
+    let size: PillStepperSize
+    let editable: Bool
+
+    init(_ initial: Int, range: ClosedRange<Int> = 1...999, size: PillStepperSize = .large, editable: Bool = false) {
+        _value = State(initialValue: initial)
+        self.range = range
+        self.size = size
+        self.editable = editable
+    }
+
+    var body: some View {
+        PillStepper(value: $value, range: range, size: size, editable: editable)
+    }
+}
+
+#Preview("Large") {
+    PillStepperPreview(5)
+        .padding()
+}
+
+#Preview("Small") {
+    PillStepperPreview(3, size: .small)
+        .padding()
+}
+
+#Preview("Editable") {
+    PillStepperPreview(42, editable: true)
+        .padding()
+}
+#endif

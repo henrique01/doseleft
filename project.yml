@@ -59,7 +59,7 @@ targets:
           - de
           - pt
     entitlements:
-      path: App/Resources/DoseLeft.entitlements
+      path: Resources/DoseLeft.entitlements
       properties:
         com.apple.security.application-groups:
           - group.com.doseleft.shared

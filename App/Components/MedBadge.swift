@@ -20,3 +20,20 @@ struct MedBadge: View {
             .accessibilityHidden(true)
     }
 }
+
+#if DEBUG
+#Preview("Inhaler — 44pt") {
+    MedBadge(symbol: "lungs.fill", accent: DLAccent.lavender.color)
+        .padding()
+}
+
+#Preview("Click pen — 44pt") {
+    MedBadge(symbol: "cross.case.fill", accent: DLAccent.sage.color)
+        .padding()
+}
+
+#Preview("Tablet — 28pt") {
+    MedBadge(symbol: "pills.fill", accent: DLAccent.terracotta.color, size: 28)
+        .padding()
+}
+#endif

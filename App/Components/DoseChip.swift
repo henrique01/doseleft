@@ -16,3 +16,20 @@ struct DoseChip: View {
             .foregroundStyle(accent.dlSaturated())
     }
 }
+
+#if DEBUG
+#Preview("Running low") {
+    DoseChip(title: "Running low", accent: DLAccent.sage.color)
+        .padding()
+}
+
+#Preview("Empty") {
+    DoseChip(title: "Empty", accent: DLAccent.terracotta.color)
+        .padding()
+}
+
+#Preview("Paused") {
+    DoseChip(title: "Paused", accent: DLAccent.lavender.color)
+        .padding()
+}
+#endif

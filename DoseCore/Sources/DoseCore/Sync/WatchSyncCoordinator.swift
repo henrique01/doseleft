@@ -103,7 +103,6 @@ public final class WatchSyncCoordinator: NSObject, WCSessionDelegate, @unchecked
             dlSyncLog.debug("pushLocalState skipped: signature unchanged")
             return
         }
-        lastPushedSignature = sig
 
         snapshotVersion &+= 1
         let snapshot = SyncSnapshot(
@@ -118,6 +117,10 @@ public final class WatchSyncCoordinator: NSObject, WCSessionDelegate, @unchecked
                 SyncPayloadKey.snapshot: data,
                 "role": role.rawValue,
             ])
+            // Only mark this signature as sent after the push succeeds —
+            // otherwise a transient failure (e.g. counterpart not yet installed)
+            // gets cached as "already sent" and later retries dedupe-skip.
+            lastPushedSignature = sig
             dlSyncLog.notice("pushLocalState sent v=\(self.snapshotVersion) meds=\(meds.count) schedules=\(schedules.count) logs=\(logs.count) from=\(self.role.rawValue, privacy: .public)")
         } catch {
             dlSyncLog.error("updateApplicationContext failed: \(error.localizedDescription, privacy: .public)")
@@ -139,6 +142,18 @@ public final class WatchSyncCoordinator: NSObject, WCSessionDelegate, @unchecked
         }
         dlSyncLog.notice("WCSession activated state=\(activationState.rawValue) role=\(self.role.rawValue, privacy: .public)")
         guard activationState == .activated else { return }
+
+        // `didReceiveApplicationContext` only fires for updates that arrive
+        // *after* activation. Anything pushed before we activated sits in
+        // `receivedApplicationContext` — apply it once on startup.
+        let received = session.receivedApplicationContext
+        if let data = received[SyncPayloadKey.snapshot] as? Data,
+           let snapshot = try? JSONDecoder().decode(SyncSnapshot.self, from: data) {
+            let fromRoleRaw = (received["role"] as? String) ?? "unknown"
+            dlSyncLog.notice("applying cached context v=\(snapshot.version) from=\(fromRoleRaw, privacy: .public) meds=\(snapshot.medications.count) logs=\(snapshot.logs.count)")
+            Task { @MainActor in self.applySnapshot(snapshot) }
+        }
+
         Task { @MainActor in self.pushLocalState() }
     }
 
@@ -165,7 +180,14 @@ public final class WatchSyncCoordinator: NSObject, WCSessionDelegate, @unchecked
               let snapshot = try? JSONDecoder().decode(SyncSnapshot.self, from: data) else { return }
         let fromRoleRaw = (applicationContext["role"] as? String) ?? "unknown"
         dlSyncLog.notice("received snapshot v=\(snapshot.version) from=\(fromRoleRaw, privacy: .public) meds=\(snapshot.medications.count) logs=\(snapshot.logs.count)")
-        Task { @MainActor in self.applySnapshot(snapshot) }
+        Task { @MainActor in
+            self.applySnapshot(snapshot)
+            // Reply with our own state. Guarantees the counterpart eventually
+            // gets our data once the link is up, even if our earlier activation
+            // push raced ahead of WC bookkeeping (e.g. isWatchAppInstalled
+            // flipping true after the watch app launches).
+            self.pushLocalState()
+        }
     }
 
     // MARK: - Apply

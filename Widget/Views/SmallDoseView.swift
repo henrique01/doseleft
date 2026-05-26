@@ -15,7 +15,7 @@ struct SmallDoseView: View {
                     Text(m.name).font(.system(size: 11, weight: .semibold)).lineLimit(1)
                     Spacer()
                 }
-                DLRing(progress: m.fillFraction, size: 94, stroke: 18, color: accent) {
+                DLRing(progress: m.fillFraction, size: 94, stroke: 5, color: accent) {
                     ringContent(for: m)
                 }
                 .frame(maxWidth: .infinity)

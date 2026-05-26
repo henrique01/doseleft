@@ -125,3 +125,49 @@ struct MedRow: View {
         return parts.joined(separator: ", ")
     }
 }
+
+#if DEBUG
+#Preview("Scheduled") {
+    let med = PreviewFixtures.scheduledMed()
+    MedRow(
+        med: med,
+        daysLeft: 40,
+        dosesRemaining: 80,
+        nextDose: (Date.now.addingTimeInterval(3600), 2),
+        isLow: false
+    )
+}
+
+#Preview("Running low") {
+    let med = PreviewFixtures.lowMed()
+    MedRow(
+        med: med,
+        daysLeft: 1,
+        dosesRemaining: 1,
+        nextDose: (Date.now.addingTimeInterval(7200), 1),
+        isLow: true
+    )
+}
+
+#Preview("As-needed") {
+    let med = PreviewFixtures.asNeededMed()
+    MedRow(
+        med: med,
+        daysLeft: 0,
+        dosesRemaining: 180,
+        nextDose: nil,
+        isLow: false
+    )
+}
+
+#Preview("Empty") {
+    let med = PreviewFixtures.scheduledMed()
+    MedRow(
+        med: med,
+        daysLeft: 0,
+        dosesRemaining: 0,
+        nextDose: nil,
+        isLow: false
+    )
+}
+#endif

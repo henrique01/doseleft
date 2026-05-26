@@ -239,6 +239,7 @@ struct MedicationDetailView: View {
                             source: log.source,
                             accent: accent
                         )
+                        .contentShape(Rectangle())
                         .contextMenu {
                             if log.source == .reset {
                                 Button { editingLog = log } label: {

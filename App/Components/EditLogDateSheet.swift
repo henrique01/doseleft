@@ -72,3 +72,27 @@ struct EditLogDateSheet: View {
         }
     }
 }
+
+#if DEBUG
+private struct EditLogDatePreviewHost: View {
+    var body: some View {
+        EditLogDateSheet(
+            log: DoseLog(timestamp: .now.addingTimeInterval(-86400), doseCount: 1, source: .reset),
+            accent: DLAccent.lavender.color,
+            onSave: { _ in }
+        )
+    }
+}
+
+#Preview("Reset date") {
+    EditLogDatePreviewHost()
+}
+
+#Preview("Correction date") {
+    EditLogDateSheet(
+        log: DoseLog(timestamp: .now.addingTimeInterval(-3600), doseCount: 1, source: .correction),
+        accent: DLAccent.sage.color,
+        onSave: { _ in }
+    )
+}
+#endif

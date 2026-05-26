@@ -6,9 +6,17 @@ struct ActivityRow: View {
     let displayText: String
     let source: LogSource
     let accent: Color
+    var isSelectMode: Bool = false
+    var isSelected: Bool = false
 
     var body: some View {
         HStack(spacing: 12) {
+            if isSelectMode {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 22))
+                    .foregroundStyle(isSelected ? accent : DL.text3)
+                    .transition(.opacity)
+            }
             VStack(alignment: .leading, spacing: 2) {
                 Text(displayText)
                     .font(DL.Numerals.row17)
@@ -23,6 +31,8 @@ struct ActivityRow: View {
         .padding(.horizontal, 16)
         .frame(minHeight: 44)
         .padding(.vertical, 6)
+        .animation(.easeInOut(duration: 0.15), value: isSelectMode)
+        .animation(.easeInOut(duration: 0.15), value: isSelected)
     }
 }
 
@@ -69,3 +79,34 @@ struct TagBadge: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("ActivityRow — scheduled") {
+    ActivityRow(
+        timestamp: .now.addingTimeInterval(-3600),
+        displayText: "2 doses",
+        source: .scheduled,
+        accent: DLAccent.lavender.color
+    )
+    .padding()
+}
+
+#Preview("ActivityRow — manual") {
+    ActivityRow(
+        timestamp: .now.addingTimeInterval(-7200),
+        displayText: "1 dose",
+        source: .manual,
+        accent: DLAccent.sage.color
+    )
+    .padding()
+}
+
+#Preview("TagBadge — all sources") {
+    VStack(spacing: 8) {
+        ForEach([LogSource.scheduled, .manual, .reset, .correction, .missed], id: \.rawValue) { source in
+            TagBadge(source: source, accent: DLAccent.lavender.color)
+        }
+    }
+    .padding()
+}
+#endif

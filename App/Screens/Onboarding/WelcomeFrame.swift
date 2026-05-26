@@ -13,7 +13,7 @@ struct WelcomeFrame: View {
                     .fill(accent.opacity(0.12))
                     .frame(width: 300, height: 300)
                     .blur(radius: 18)
-                DLRing(progress: 0.75, size: 220, stroke: 44, color: accent) {
+                DLRing(progress: 0.75, size: 220, stroke: 12, color: accent) {
                     VStack(spacing: 2) {
                         Text("23").font(.system(size: 64, weight: .bold, design: .rounded))
                             .foregroundStyle(DL.text)

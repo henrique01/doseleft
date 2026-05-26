@@ -22,7 +22,6 @@ struct DoseLeftApp: App {
                         OnboardingFlow(onFinish: { didOnboard = true })
                     }
                 }
-                .preferredColorScheme(themePreference.colorScheme)
                 .tint(DLAccent.lavender.color)
 
                 if showSplash {
@@ -31,6 +30,7 @@ struct DoseLeftApp: App {
                         .zIndex(1)
                 }
             }
+            .preferredColorScheme(themePreference.colorScheme)
             .task {
                 try? await Task.sleep(nanoseconds: 1_200_000_000)
                 withAnimation(.easeOut(duration: 0.35)) {

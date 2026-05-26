@@ -26,6 +26,27 @@ enum DoseLogActions {
     ///   the dose. The presentation helper hides both the synthetic and the
     ///   compensating correction from history.
     static func erase(_ log: DoseLog, for med: Medication, in context: ModelContext) {
+        applyErase(log, for: med, in: context)
+        context.dlSave()
+        Haptic.tap(.soft)
+        Task { await NotificationScheduler.shared.rescheduleAll(meds: [med]) }
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    /// Batched variant of `erase` for bulk delete in `HistoryView`'s Select
+    /// mode. Applies the same per-log rule but saves the context, fires the
+    /// haptic, reschedules notifications, and reloads widget timelines only
+    /// once for the whole batch.
+    static func eraseMany(_ logs: [DoseLog], for med: Medication, in context: ModelContext) {
+        guard !logs.isEmpty else { return }
+        for log in logs { applyErase(log, for: med, in: context) }
+        context.dlSave()
+        Haptic.tap(.soft)
+        Task { await NotificationScheduler.shared.rescheduleAll(meds: [med]) }
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private static func applyErase(_ log: DoseLog, for med: Medication, in context: ModelContext) {
         if log.source == .scheduled {
             let comp = DoseLog(
                 timestamp: log.timestamp,
@@ -37,10 +58,6 @@ enum DoseLogActions {
         } else {
             context.delete(log)
         }
-        context.dlSave()
-        Haptic.tap(.soft)
-        Task { await NotificationScheduler.shared.rescheduleAll(meds: [med]) }
-        WidgetCenter.shared.reloadAllTimelines()
     }
 
     /// Mark today's most recent past-due scheduled dose as missed.

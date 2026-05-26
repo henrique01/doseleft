@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DoseLeft — New Medication form (handoff demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body, #root { margin:0; padding:0; width:100%; height:100%; background:#f0eee9; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  *, *::before, *::after { box-sizing: border-box; }
+  button { font-family: inherit; }
+  .dl-tabnums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+  @keyframes dlFlash { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="src/tokens.jsx"></script>
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/ui.jsx"></script>
+<script type="text/babel" src="src/screens-forms.jsx"></script>
+
+<script type="text/babel">
+  // Minimal canvas containing only the New medication form variants.
+  function FormHandoffCanvas() {
+    return (
+      <DesignCanvas>
+        <DCSection
+          id="new-med"
+          title="New medication — scan-first flow"
+          subtitle="Scan landing · Camera viewfinder · Auto-filled review · Manual entry · Pickers"
+        >
+          <DCArtboard id="scan"     label="① Scan landing"           width={DL_W} height={DL_H}><DLAdd entry="scan-empty"/></DCArtboard>
+          <DCArtboard id="scanning" label="② Camera viewfinder"      width={DL_W} height={DL_H}><DLAdd entry="scanning"/></DCArtboard>
+          <DCArtboard id="scanned"  label="③ Auto-filled · review"   width={DL_W} height={DL_H}><DLAdd entry="scanned"/></DCArtboard>
+          <DCArtboard id="manual"   label="④ Manual entry"           width={DL_W} height={DL_H}><DLAdd entry="manual"/></DCArtboard>
+          <DCArtboard id="type"     label="… form (type) picker"     width={DL_W} height={DL_H}><DLAdd entry="manual" openSheet="type"/></DCArtboard>
+          <DCArtboard id="icon"     label="… icon picker"            width={DL_W} height={DL_H}><DLAdd entry="manual" openSheet="icon"/></DCArtboard>
+          <DCArtboard id="inhaler"  label="As inhaler · lavender"    width={DL_W} height={DL_H}><DLAdd entry="manual" initialType="inhaler" initialName="Flixotide" initialColor={dlTokens.accents.lavender}/></DCArtboard>
+          <DCArtboard id="sched"    label="Schedule editor (sheet)"  width={DL_W} height={DL_H}><DLSchedule/></DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<FormHandoffCanvas/>);
+</script>
+</body>
+</html>

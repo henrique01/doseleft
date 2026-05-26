@@ -8,8 +8,15 @@ struct HistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @State private var editingLog: DoseLog?
+    @State private var isSelecting: Bool = false
+    @State private var selection: Set<UUID> = []
+    @State private var confirmBulkDelete: Bool = false
 
     private var accent: Color { DLAccent.from(hex: med.colorHex).color }
+
+    private var allLogIDs: Set<UUID> {
+        Set(sections.flatMap { $0.entries }.map { $0.log.id })
+    }
 
     private struct Section: Identifiable {
         let id = UUID()
@@ -82,22 +89,7 @@ struct HistoryView: View {
 
                         VStack(spacing: 0) {
                             ForEach(Array(section.entries.enumerated()), id: \.element.id) { idx, entry in
-                                ActivityRow(
-                                    timestamp: entry.timestamp,
-                                    displayText: entry.display,
-                                    source: entry.source,
-                                    accent: accent
-                                )
-                                .contextMenu {
-                                    if entry.log.source == .reset {
-                                        Button { editingLog = entry.log } label: {
-                                            Label("Edit date", systemImage: "calendar")
-                                        }
-                                    }
-                                    Button(role: .destructive) { erase(entry.log) } label: {
-                                        Label("Erase", systemImage: "trash")
-                                    }
-                                }
+                                rowView(for: entry)
                                 if idx < section.entries.count - 1 { Divider().padding(.leading, 16) }
                             }
                         }
@@ -112,8 +104,45 @@ struct HistoryView: View {
             .navigationTitle(med.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }.foregroundStyle(accent)
+                if isSelecting {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel") { exitSelectMode() }
+                            .foregroundStyle(DL.text2)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(allLogIDs.isEmpty || selection != allLogIDs ? "Select all" : "Deselect all") {
+                            if selection == allLogIDs {
+                                selection.removeAll()
+                            } else {
+                                selection = allLogIDs
+                            }
+                            Haptic.tap(.light)
+                        }
+                        .foregroundStyle(accent)
+                        .disabled(allLogIDs.isEmpty)
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button {
+                            confirmBulkDelete = true
+                        } label: {
+                            Text(selection.isEmpty ? "Delete" : "Delete (\(selection.count))")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(selection.isEmpty ? DL.text3 : .red)
+                        }
+                        .disabled(selection.isEmpty)
+                    }
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Select") {
+                            isSelecting = true
+                            selection.removeAll()
+                        }
+                        .foregroundStyle(accent)
+                        .disabled(sections.isEmpty)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Done") { dismiss() }.foregroundStyle(accent)
+                    }
                 }
             }
             .sheet(item: $editingLog) { log in
@@ -121,7 +150,65 @@ struct HistoryView: View {
                     DoseLogActions.updateTimestamp(log, to: newDate, for: med, in: context)
                 }
             }
+            .confirmationDialog(
+                "Delete \(selection.count) \(selection.count == 1 ? "entry" : "entries")?",
+                isPresented: $confirmBulkDelete,
+                titleVisibility: .visible
+            ) {
+                Button("Delete", role: .destructive) { performBulkDelete() }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("This can't be undone.")
+            }
         }
+    }
+
+    @ViewBuilder
+    private func rowView(for entry: Entry) -> some View {
+        let isSelected = selection.contains(entry.log.id)
+        Button {
+            guard isSelecting else { return }
+            if isSelected {
+                selection.remove(entry.log.id)
+            } else {
+                selection.insert(entry.log.id)
+            }
+            Haptic.tap(.light)
+        } label: {
+            ActivityRow(
+                timestamp: entry.timestamp,
+                displayText: entry.display,
+                source: entry.source,
+                accent: accent,
+                isSelectMode: isSelecting,
+                isSelected: isSelected
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .modifier(ConditionalContextMenu(enabled: !isSelecting) {
+            if entry.log.source == .reset {
+                Button { editingLog = entry.log } label: {
+                    Label("Edit date", systemImage: "calendar")
+                }
+            }
+            Button(role: .destructive) { erase(entry.log) } label: {
+                Label("Erase", systemImage: "trash")
+            }
+        })
+    }
+
+    private func exitSelectMode() {
+        isSelecting = false
+        selection.removeAll()
+    }
+
+    private func performBulkDelete() {
+        let logs = sections.flatMap { $0.entries }
+            .filter { selection.contains($0.log.id) }
+            .map { $0.log }
+        DoseLogActions.eraseMany(logs, for: med, in: context)
+        exitSelectMode()
     }
 
     private func erase(_ log: DoseLog) {
@@ -140,6 +227,21 @@ struct HistoryView: View {
         case .manual, .scheduled:
             let unit = log.doseCount == 1 ? base : base + "s"
             return "\(log.doseCount) \(unit)"
+        }
+    }
+}
+
+/// Applies a `.contextMenu` only when `enabled` — used to suppress the
+/// long-press menu while the history is in multi-select mode.
+private struct ConditionalContextMenu<MenuItems: View>: ViewModifier {
+    let enabled: Bool
+    @ViewBuilder let menuItems: () -> MenuItems
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.contextMenu(menuItems: menuItems)
+        } else {
+            content
         }
     }
 }

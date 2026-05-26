@@ -36,3 +36,34 @@ struct WeekdayPicker: View {
         ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day - 1]
     }
 }
+
+#if DEBUG
+private struct WeekdayPickerPreview: View {
+    @State private var selected: Set<Int>
+    let accent: Color
+
+    init(_ initial: Set<Int>, accent: Color = DLAccent.lavender.color) {
+        _selected = State(initialValue: initial)
+        self.accent = accent
+    }
+
+    var body: some View {
+        WeekdayPicker(selected: $selected, accent: accent)
+    }
+}
+
+#Preview("Weekdays selected") {
+    WeekdayPickerPreview([2, 3, 4, 5, 6])
+        .padding()
+}
+
+#Preview("Single day") {
+    WeekdayPickerPreview([1])
+        .padding()
+}
+
+#Preview("None selected") {
+    WeekdayPickerPreview([])
+        .padding()
+}
+#endif

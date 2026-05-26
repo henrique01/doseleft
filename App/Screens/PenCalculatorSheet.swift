@@ -18,26 +18,37 @@ struct PenCalculatorSheet: View {
     @Binding var clicksPerDose: Int
     @Binding var doseMg: Double
 
-    // Decimal inputs are stored as integer "tenths" so the number-pad keyboard
-    // is all we ever need: the user types "25" and the formatter inserts the
-    // locale's decimal separator to show "2,5" (or "2.5" in en). Each step
-    // button adjusts by 5 tenths (= 0.5). Ranges keep results sensible.
-    @State private var penVolumeTenths: Int            // 1...999  (0.1–99.9 mL)
-    @State private var concentrationTenths: Int        // 1...9999 (0.1–999.9 mg/mL)
-    @State private var totalMgTenths: Int              // 1...99999 (0.1–9999.9 mg per vial)
-    @State private var doseTenths: Int                 // 1...999  (0.1–99.9 mg)
+    // Decimal inputs are stored as integer "hundredths" so the number-pad
+    // keyboard is all we ever need: the user types "500" and the formatter
+    // shifts each digit one place left, locale-formatted to "5,00" (or "5.00"
+    // in en). Each step button adjusts by 50 hundredths (= 0.5). Ranges keep
+    // results sensible.
+    @State private var penVolumeHundredths: Int       // 1...9999  (0.01–99.99 mL)
+    @State private var concentrationHundredths: Int   // 1...99999 (0.01–999.99 mg/mL)
+    @State private var totalMgHundredths: Int         // 1...999999 (0.01–9999.99 mg per vial)
+    @State private var doseHundredths: Int            // 1...9999  (0.01–99.99 mg)
     @State private var unitsPerML: Int
     @State private var entryMode: ConcentrationEntryMode = .concentration
     @State private var showAdvanced: Bool = false
 
+    // Mirror @State Strings for each number-pad field. SwiftUI's TextField
+    // ignores a transformed Binding<String> while the field is first
+    // responder (so reformatted text only appears on resign). Driving the
+    // field with a real @State and reformatting inside .onChange forces the
+    // visible text to refresh on every keystroke.
+    @State private var penVolumeText: String = ""
+    @State private var concentrationText: String = ""
+    @State private var totalMgText: String = ""
+    @State private var doseText: String = ""
+
     @FocusState private var focused: Field?
-    private enum Field: Hashable { case volume, concentration, totalMg, dose }
+    fileprivate enum Field: Hashable { case volume, concentration, totalMg, dose }
     private enum ConcentrationEntryMode: Hashable { case concentration, totalMg }
 
-    private static let volumeRange = 1...999
-    private static let concentrationRange = 1...9999
-    private static let totalMgRange = 1...99999
-    private static let doseRange = 1...999
+    private static let volumeRange = 1...9999
+    private static let concentrationRange = 1...99999
+    private static let totalMgRange = 1...999999
+    private static let doseRange = 1...9999
 
     init(
         accent: Color,
@@ -53,38 +64,46 @@ struct PenCalculatorSheet: View {
         let initialClicks = max(0, clicksPerDose.wrappedValue)
         let initialDose = doseMg.wrappedValue
         // Sensible defaults: 3 mL pen at 100 units/mL is the KwikPen norm.
-        self._penVolumeTenths = State(initialValue: 30)            // 3.0 mL
-        let seededConcentration: Int = {
-            guard initialDose > 0, initialClicks > 0 else { return 100 } // 10.0
+        let seedVolume = 300                            // 3.00 mL
+        let seedConcentration: Int = {
+            guard initialDose > 0, initialClicks > 0 else { return 1000 } // 10.00
             let mgPerML = (initialDose / Double(initialClicks)) * 100.0
-            return max(1, Int((mgPerML * 10).rounded()))
+            return max(1, Int((mgPerML * 100).rounded()))
         }()
-        self._concentrationTenths = State(initialValue: seededConcentration)
         // Total mg in vial seeded from concentration × 3 mL default — keeps the
         // pair consistent when the user opens the sheet and flips to Total mg.
-        let seededTotal = max(1, Int((Double(seededConcentration) / 10.0 * 3.0 * 10).rounded()))
-        self._totalMgTenths = State(initialValue: min(99999, seededTotal))
-        self._doseTenths = State(
-            initialValue: initialDose > 0 ? max(1, Int((initialDose * 10).rounded())) : 50
-        )
+        let seedTotal = max(1, Int((Double(seedConcentration) / 100.0 * 3.0 * 100).rounded()))
+        let seedDose = initialDose > 0
+            ? max(1, Int((initialDose * 100).rounded()))
+            : 500                                       // 5.00 mg
+        self._penVolumeHundredths = State(initialValue: seedVolume)
+        self._concentrationHundredths = State(initialValue: seedConcentration)
+        self._totalMgHundredths = State(initialValue: min(999999, seedTotal))
+        self._doseHundredths = State(initialValue: seedDose)
         self._unitsPerML = State(initialValue: 100)
+
+        let sep = Locale.current.decimalSeparator ?? "."
+        self._penVolumeText = State(initialValue: Self.formatHundredthsStatic(seedVolume, separator: sep))
+        self._concentrationText = State(initialValue: Self.formatHundredthsStatic(seedConcentration, separator: sep))
+        self._totalMgText = State(initialValue: Self.formatHundredthsStatic(min(999999, seedTotal), separator: sep))
+        self._doseText = State(initialValue: Self.formatHundredthsStatic(seedDose, separator: sep))
     }
 
     // MARK: - Derived
 
-    private var penVolumeML: Double { Double(penVolumeTenths) / 10.0 }
-    private var totalMgInVial: Double { Double(totalMgTenths) / 10.0 }
+    private var penVolumeML: Double { Double(penVolumeHundredths) / 100.0 }
+    private var totalMgInVial: Double { Double(totalMgHundredths) / 100.0 }
     /// Concentration is the source of truth for all downstream math. In
     /// `.concentration` mode it's stored directly; in `.totalMg` mode it's
     /// derived from `totalMg / volume`. Whichever field is *not* the source
     /// is shown as a derived footnote next to the active input.
     private var concentrationMgPerML: Double {
         switch entryMode {
-        case .concentration: return Double(concentrationTenths) / 10.0
+        case .concentration: return Double(concentrationHundredths) / 100.0
         case .totalMg:       return penVolumeML > 0 ? totalMgInVial / penVolumeML : 0
         }
     }
-    private var doseMgInput: Double { Double(doseTenths) / 10.0 }
+    private var doseMgInput: Double { Double(doseHundredths) / 100.0 }
 
     private var totalClicks: Int {
         Int((penVolumeML * Double(unitsPerML)).rounded())
@@ -124,6 +143,12 @@ struct PenCalculatorSheet: View {
 
     private var decimalSeparator: String { Locale.current.decimalSeparator ?? "." }
 
+    /// Ordered list of focusable fields, in tab order. The middle slot swaps
+    /// between concentration and totalMg with the mode picker.
+    private var orderedFields: [Field] {
+        [.volume, entryMode == .concentration ? .concentration : .totalMg, .dose]
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -153,7 +178,22 @@ struct PenCalculatorSheet: View {
                         .disabled(!canApply)
                 }
                 ToolbarItemGroup(placement: .keyboard) {
+                    Button {
+                        if let prev = previousField(from: focused) { focused = prev }
+                    } label: {
+                        Image(systemName: "chevron.up")
+                    }
+                    .disabled(previousField(from: focused) == nil)
+
+                    Button {
+                        if let next = nextField(from: focused) { focused = next }
+                    } label: {
+                        Image(systemName: "chevron.down")
+                    }
+                    .disabled(nextField(from: focused) == nil)
+
                     Spacer()
+
                     Button("Done") {
                         focused = nil
                     }
@@ -169,12 +209,16 @@ struct PenCalculatorSheet: View {
             switch newMode {
             case .totalMg:
                 let mg = concentrationMgPerML * penVolumeML
-                totalMgTenths = min(Self.totalMgRange.upperBound,
-                                    max(Self.totalMgRange.lowerBound, Int((mg * 10).rounded())))
+                let clamped = min(Self.totalMgRange.upperBound,
+                                  max(Self.totalMgRange.lowerBound, Int((mg * 100).rounded())))
+                totalMgHundredths = clamped
+                totalMgText = formatHundredths(clamped)
             case .concentration:
-                concentrationTenths = min(Self.concentrationRange.upperBound,
-                                          max(Self.concentrationRange.lowerBound,
-                                              Int((concentrationMgPerML * 10).rounded())))
+                let clamped = min(Self.concentrationRange.upperBound,
+                                  max(Self.concentrationRange.lowerBound,
+                                      Int((concentrationMgPerML * 100).rounded())))
+                concentrationHundredths = clamped
+                concentrationText = formatHundredths(clamped)
             }
         }
     }
@@ -202,23 +246,29 @@ struct PenCalculatorSheet: View {
                     .padding(.top, 4)
                     .padding(.bottom, 8)
                 Grid(alignment: .center, horizontalSpacing: 10, verticalSpacing: 0) {
-                    tenthsGridRow(title: "Pen volume", unit: "mL",
-                                  tenths: $penVolumeTenths, range: Self.volumeRange, field: .volume)
+                    hundredthsGridRow(title: "Pen volume", unit: "mL",
+                                      hundredths: $penVolumeHundredths,
+                                      text: $penVolumeText,
+                                      range: Self.volumeRange, field: .volume)
                     gridDivider
                     if entryMode == .concentration {
-                        tenthsGridRow(title: "Concentration", unit: "mg/mL",
-                                      tenths: $concentrationTenths,
-                                      range: Self.concentrationRange,
-                                      field: .concentration)
+                        hundredthsGridRow(title: "Concentration", unit: "mg/mL",
+                                          hundredths: $concentrationHundredths,
+                                          text: $concentrationText,
+                                          range: Self.concentrationRange,
+                                          field: .concentration)
                     } else {
-                        tenthsGridRow(title: "Vial total", unit: "mg",
-                                      tenths: $totalMgTenths,
-                                      range: Self.totalMgRange,
-                                      field: .totalMg)
+                        hundredthsGridRow(title: "Vial total", unit: "mg",
+                                          hundredths: $totalMgHundredths,
+                                          text: $totalMgText,
+                                          range: Self.totalMgRange,
+                                          field: .totalMg)
                     }
                     gridDivider
-                    tenthsGridRow(title: "Dose", unit: "mg",
-                                  tenths: $doseTenths, range: Self.doseRange, field: .dose)
+                    hundredthsGridRow(title: "Dose", unit: "mg",
+                                      hundredths: $doseHundredths,
+                                      text: $doseText,
+                                      range: Self.doseRange, field: .dose)
                     if showAdvanced {
                         gridDivider
                         intGridRow(title: "Units per mL", value: $unitsPerML, range: 10...500)
@@ -309,7 +359,7 @@ struct PenCalculatorSheet: View {
                 Text("Dose is rounded")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(accent.dlSaturated())
-                Text("Dialing \(derivedClicksPerDose) clicks delivers \(formatMg(actualDeliveredMg)) mg — \(percent) \(direction) the prescribed \(formatMg(doseMgInput)) mg. Confirm with your prescriber.")
+                Text("Dialing \(derivedClicksPerDose) clicks delivers \(formatMg(actualDeliveredMg)) mg, \(percent) \(direction) the prescribed \(formatMg(doseMgInput)) mg. Confirm with your prescriber.")
                     .font(DL.Text.footnote13)
                     .foregroundStyle(DL.text2)
             }
@@ -341,16 +391,18 @@ struct PenCalculatorSheet: View {
     // MARK: - Row builders
 
     /// Fixed widths for the three trailing columns. The label column takes
-    /// whatever's left; the value column is wide enough for a 4-digit
-    /// formatted number ("999,9"); the unit column fits "mg/mL".
-    private static let valueColumnWidth: CGFloat = 78
+    /// whatever's left; the value column is wide enough for the longest
+    /// formatted hundredths value (e.g. "9999,99"); the unit column fits
+    /// "mg/mL".
+    private static let valueColumnWidth: CGFloat = 92
     private static let unitColumnWidth: CGFloat = 54
 
     @ViewBuilder
-    private func tenthsGridRow(
+    private func hundredthsGridRow(
         title: String,
         unit: String,
-        tenths: Binding<Int>,
+        hundredths: Binding<Int>,
+        text: Binding<String>,
         range: ClosedRange<Int>,
         field: Field
     ) -> some View {
@@ -362,17 +414,31 @@ struct PenCalculatorSheet: View {
                 .minimumScaleFactor(0.85)
                 .frame(maxWidth: .infinity, alignment: .leading)
             stepButton(symbol: "minus") {
-                tenths.wrappedValue = max(range.lowerBound, tenths.wrappedValue - 5)
+                let new = max(range.lowerBound, hundredths.wrappedValue - 50)
+                hundredths.wrappedValue = new
+                text.wrappedValue = formatHundredths(new)
             }
-            TextField("", text: tenthsTextBinding(for: tenths, range: range))
+            TextField("", text: text)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.center)
                 .font(DL.Numerals.row17)
                 .foregroundStyle(DL.text)
                 .frame(width: Self.valueColumnWidth)
                 .focused($focused, equals: field)
+                .onChange(of: text.wrappedValue) { _, newValue in
+                    let parsed = parseHundredths(newValue, range: range)
+                    if parsed != hundredths.wrappedValue {
+                        hundredths.wrappedValue = parsed
+                    }
+                    let reformatted = formatHundredths(parsed)
+                    if reformatted != newValue {
+                        text.wrappedValue = reformatted
+                    }
+                }
             stepButton(symbol: "plus") {
-                tenths.wrappedValue = min(range.upperBound, tenths.wrappedValue + 5)
+                let new = min(range.upperBound, hundredths.wrappedValue + 50)
+                hundredths.wrappedValue = new
+                text.wrappedValue = formatHundredths(new)
             }
             Text(unit)
                 .font(DL.Text.subhead15)
@@ -429,30 +495,26 @@ struct PenCalculatorSheet: View {
         .buttonStyle(.plain)
     }
 
-    /// Two-way binding: the user types digits, the display shows them
-    /// formatted with the locale's decimal separator one place from the
-    /// right ("25" → "2,5", "5" → "0,5", "150" → "15,0"). Non-digit input
-    /// is stripped silently so the number pad stays the only thing needed.
-    private func tenthsTextBinding(for binding: Binding<Int>, range: ClosedRange<Int>) -> Binding<String> {
-        Binding(
-            get: { formatTenths(binding.wrappedValue) },
-            set: { newValue in
-                let digits = newValue.filter(\.isNumber)
-                // Trim leading zeros and cap the digit count to the range's
-                // upper bound width so the field can't blow past 99,9 etc.
-                let maxDigits = String(range.upperBound).count
-                let capped = String(digits.prefix(maxDigits))
-                let parsed = Int(capped) ?? 0
-                binding.wrappedValue = min(range.upperBound, max(0, parsed))
-            }
-        )
+    /// Parse user input as right-aligned digits in a hundredths integer.
+    /// Non-digits are stripped; the leading digits are clipped to the range's
+    /// upper bound so the field can't blow past 9999,99 etc.
+    private func parseHundredths(_ raw: String, range: ClosedRange<Int>) -> Int {
+        let digits = raw.filter(\.isNumber)
+        let maxDigits = String(range.upperBound).count
+        let capped = String(digits.prefix(maxDigits))
+        let parsed = Int(capped) ?? 0
+        return min(range.upperBound, max(0, parsed))
     }
 
-    private func formatTenths(_ tenths: Int) -> String {
-        let value = max(0, tenths)
-        let intPart = value / 10
-        let fracPart = value % 10
-        return "\(intPart)\(decimalSeparator)\(fracPart)"
+    private func formatHundredths(_ value: Int) -> String {
+        Self.formatHundredthsStatic(value, separator: decimalSeparator)
+    }
+
+    private static func formatHundredthsStatic(_ value: Int, separator: String) -> String {
+        let v = max(0, value)
+        let intPart = v / 100
+        let fracPart = v % 100
+        return "\(intPart)\(separator)\(String(format: "%02d", fracPart))"
     }
 
     @ViewBuilder
@@ -486,6 +548,18 @@ struct PenCalculatorSheet: View {
                 .background(DL.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .padding(.horizontal, 16)
         }
+    }
+
+    // MARK: - Focus navigation
+
+    private func previousField(from current: Field?) -> Field? {
+        guard let current, let idx = orderedFields.firstIndex(of: current), idx > 0 else { return nil }
+        return orderedFields[idx - 1]
+    }
+
+    private func nextField(from current: Field?) -> Field? {
+        guard let current, let idx = orderedFields.firstIndex(of: current), idx < orderedFields.count - 1 else { return nil }
+        return orderedFields[idx + 1]
     }
 
     // MARK: - Actions
