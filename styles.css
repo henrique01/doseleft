@@ -100,13 +100,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .wordmark .mark {
   width: 32px; height: 32px;
   border-radius: 9px;
-  background: var(--lavender);
-  display: grid; place-items: center;
-  color: white;
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.04em;
-  box-shadow: 0 6px 14px -4px rgba(167,139,213,0.45);
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 6px 14px -4px rgba(20,15,30,0.18);
 }
 .site-header nav {
   display: flex;
