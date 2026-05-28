@@ -257,6 +257,30 @@ p.lede {
   .links a.primary { color: #15131A; }
 }
 
+/* ─── Official App Store badge (primary hero action) ─── */
+.store { margin-top: 26px; }
+.store-badge {
+  display: inline-block;
+  border-radius: 9px;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+.store-badge:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+.store-badge:focus-visible {
+  outline: 2px solid var(--lavender);
+  outline-offset: 3px;
+}
+.store-badge img {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+/* Tighten the secondary text links when they follow the badge */
+.store + .links { margin-top: 16px; }
+
 /* ─── Home hero layout ─── */
 .hero {
   display: grid;
